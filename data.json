@@ -1,7 +1,7 @@
 {
  "app": "granite-sink-formulas",
  "version": 2,
- "updatedAt": "2026-08-15T18:44:13.415Z",
+ "updatedAt": "2026-08-15T18:47:04.141Z",
  "categories": [
   "ژلکوت",
   "رزین",
@@ -72,9 +72,85 @@
    "id": "idvoxu74x60v4",
    "name": "پودر سفید صدف",
    "unit": "گرم"
+  },
+  {
+   "id": "idtu0xu8m680f",
+   "name": "پودر نوک مدادی",
+   "unit": "گرم"
+  },
+  {
+   "id": "idrt7b4jn6rhr",
+   "name": "پودر قهوه ای",
+   "unit": "گرم"
+  },
+  {
+   "id": "idcr2757h704q",
+   "name": "پودر بنفش",
+   "unit": "گرم"
+  },
+  {
+   "id": "idnhlqzvr79oz",
+   "name": "پودر طلایی",
+   "unit": "گرم"
   }
  ],
  "formulas": [
+  {
+   "id": "idi21h63p2fjn",
+   "name": "فرمول بژ",
+   "category": "ژلکوت",
+   "color": {
+    "hex": "#696720",
+    "name": "بژ"
+   },
+   "description": "",
+   "image": null,
+   "base": {
+    "name": "ژلکوت",
+    "amount": 10,
+    "unit": "کیلوگرم"
+   },
+   "materials": [
+    {
+     "id": "id4lj17ux58dp",
+     "name": "سیلیس",
+     "amount": 3.3,
+     "unit": "کیلوگرم"
+    },
+    {
+     "id": "idopucj2e5khx",
+     "name": "پودر قهوه ای",
+     "amount": 55,
+     "unit": "گرم"
+    },
+    {
+     "id": "idvi9cnl47pt1",
+     "name": "پودر سفید صدف",
+     "amount": 97,
+     "unit": "گرم"
+    },
+    {
+     "id": "idggivfic82wk",
+     "name": "پودر بنفش",
+     "amount": 8,
+     "unit": "گرم"
+    },
+    {
+     "id": "idyn85ylz8d6z",
+     "name": "پودر طلایی",
+     "amount": 166,
+     "unit": "گرم"
+    }
+   ],
+   "variants": [],
+   "tags": [],
+   "history": [],
+   "fav": false,
+   "createdAt": 1786819284275,
+   "updatedAt": 1786819622640,
+   "useCount": 0,
+   "lastUsedAt": null
+  },
   {
    "id": "idcbdrfq8xlch",
    "name": "فرمول کرم",

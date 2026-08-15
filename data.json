@@ -1,7 +1,7 @@
 {
  "app": "granite-sink-formulas",
  "version": 2,
- "updatedAt": "2026-08-15T18:38:51.741Z",
+ "updatedAt": "2026-08-15T18:40:02.359Z",
  "categories": [
   "ژلکوت",
   "رزین",
@@ -70,6 +70,38 @@
   }
  ],
  "formulas": [
+  {
+   "id": "idcbdrfq8xlch",
+   "name": "فرمول کرم",
+   "category": "ژلکوت",
+   "color": {
+    "hex": "#f0c190",
+    "name": "کرم"
+   },
+   "description": "",
+   "image": null,
+   "base": {
+    "name": "ژلکوت سفید",
+    "amount": 10,
+    "unit": "کیلوگرم"
+   },
+   "materials": [
+    {
+     "id": "id9w1qu53yhww",
+     "name": "پودر گلوماش",
+     "amount": 14.5,
+     "unit": "گرم"
+    }
+   ],
+   "variants": [],
+   "tags": [],
+   "history": [],
+   "fav": false,
+   "createdAt": 1786819058513,
+   "updatedAt": 1786819200855,
+   "useCount": 0,
+   "lastUsedAt": null
+  },
   {
    "id": "id6yl9q2mudsx",
    "name": "فرمول طوسی",

@@ -1,7 +1,7 @@
 {
  "app": "granite-sink-formulas",
  "version": 2,
- "updatedAt": "2026-08-15T19:21:54.540Z",
+ "updatedAt": "2026-08-15T19:23:52.982Z",
  "categories": [
   "ژلکوت",
   "رزین",
@@ -97,9 +97,77 @@
    "id": "id4wyxdrdihlb",
    "name": "پودر شاین 183",
    "unit": "گرم"
+  },
+  {
+   "id": "idp89rp5wio7s",
+   "name": "پودر شاین 163",
+   "unit": "گرم"
   }
  ],
  "formulas": [
+  {
+   "id": "id9b0ekamfees",
+   "name": "ژلکوت بی رنگ Poliya",
+   "category": "ژلکوت",
+   "color": {
+    "hex": "#00ffff",
+    "name": "بی رنگ"
+   },
+   "description": "",
+   "image": null,
+   "base": {
+    "name": "ژلکوت",
+    "amount": 20,
+    "unit": "کیلوگرم"
+   },
+   "materials": [
+    {
+     "id": "idebtga50hs56",
+     "name": "کبالت",
+     "amount": 10,
+     "unit": "گرم"
+    },
+    {
+     "id": "id2as7oy6j7wj",
+     "name": "اروزیل",
+     "amount": 50,
+     "unit": "گرم"
+    }
+   ],
+   "variants": [
+    {
+     "id": "idq01id0ejots",
+     "name": "سفید",
+     "materials": [
+      {
+       "id": "id49binuzjtxu",
+       "name": "پودر شاین 183",
+       "amount": 3,
+       "unit": "درب نوشابه"
+      }
+     ]
+    },
+    {
+     "id": "idhz7gq3ajvs6",
+     "name": "مشکی",
+     "materials": [
+      {
+       "id": "idmmsjwojk0ki",
+       "name": "پودر شاین 183",
+       "amount": 1.5,
+       "unit": "درب نوشابه"
+      }
+     ]
+    }
+   ],
+   "tags": [],
+   "history": [],
+   "fav": false,
+   "createdAt": 1786821568948,
+   "updatedAt": 1786821831481,
+   "useCount": 0,
+   "lastUsedAt": null
+  },
   {
    "id": "idw6twstqa8bv",
    "name": "فرمول نوک مدادی",

@@ -1,7 +1,7 @@
 {
  "app": "granite-sink-formulas",
  "version": 2,
- "updatedAt": "2026-08-15T10:54:21.927Z",
+ "updatedAt": "2026-08-15T10:56:32.312Z",
  "categories": [
   "ژلکوت",
   "رزین",
@@ -56,7 +56,7 @@
   {
    "id": "idvet9ghwal5e",
    "name": "تینر قلم شور",
-   "unit": "گرم"
+   "unit": "لیوان یکبار مصرف"
   },
   {
    "id": "idhqztzfpavby",

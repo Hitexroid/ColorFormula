@@ -1,7 +1,7 @@
 {
  "app": "granite-sink-formulas",
  "version": 2,
- "updatedAt": "2026-08-15T18:36:49.833Z",
+ "updatedAt": "2026-08-15T18:38:51.741Z",
  "categories": [
   "ژلکوت",
   "رزین",
@@ -61,6 +61,11 @@
   {
    "id": "idhqztzfpavby",
    "name": "استایرن",
+   "unit": "گرم"
+  },
+  {
+   "id": "idrbkw8zvz4ox",
+   "name": "پودر گلوماش",
    "unit": "گرم"
   }
  ],

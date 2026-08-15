@@ -1,7 +1,7 @@
 {
  "app": "granite-sink-formulas",
  "version": 2,
- "updatedAt": "2026-08-15T19:18:26.777Z",
+ "updatedAt": "2026-08-15T19:21:54.540Z",
  "categories": [
   "ژلکوت",
   "رزین",
@@ -91,6 +91,11 @@
   {
    "id": "idnhlqzvr79oz",
    "name": "پودر طلایی",
+   "unit": "گرم"
+  },
+  {
+   "id": "id4wyxdrdihlb",
+   "name": "پودر شاین 183",
    "unit": "گرم"
   }
  ],

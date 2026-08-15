@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#070b10">
+<title>فرمول‌یار | مدیریت فرمول‌های سینک گرانیتی</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font:'Vazirmatn',system-ui,-apple-system,sans-serif;
+  --accent-a:#2dd4bf; --accent-b:#38bdf8;
+  --acc-grad:linear-gradient(135deg,var(--accent-a),var(--accent-b));
+  --r-s:14px; --r-m:20px; --r-l:28px;
+  --ease:cubic-bezier(.22,.9,.3,1.1);
+}
+html[data-pal="dark"]{
+  --bg0:#070b10; --bg1:#0b1220;
+  --ink:#e9eff6; --ink2:rgba(233,239,246,.62); --ink3:rgba(233,239,246,.38);
+  --gA:rgba(255,255,255,.085); --gB:rgba(255,255,255,.028);
+  --g-brd:rgba(255,255,255,.13);
+  --g-edge:rgba(255,255,255,.5); --g-edge2:rgba(255,255,255,.16);
+  --g-in:rgba(255,255,255,.30); --g-inb:rgba(255,255,255,.05);
+  --sh1:0 30px 60px -22px rgba(0,0,0,.65); --sh2:0 6px 18px -6px rgba(0,0,0,.4);
+  --orb-op:.5; --grain-op:.05;
+  --chip-on-ink:#05272b;
+  --danger:#fb7185; --ok:#34d399;
+  --field:rgba(255,255,255,.055);
+  --tbl:rgba(255,255,255,.07);
+}
+html[data-pal="light"]{
+  --bg0:#e8edf4; --bg1:#f2f5fa;
+  --ink:#141c26; --ink2:rgba(20,28,38,.66); --ink3:rgba(20,28,38,.42);
+  --gA:rgba(255,255,255,.82); --gB:rgba(255,255,255,.42);
+  --g-brd:rgba(255,255,255,.9);
+  --g-edge:rgba(255,255,255,1); --g-edge2:rgba(255,255,255,.55);
+  --g-in:rgba(255,255,255,.95); --g-inb:rgba(120,140,165,.18);
+  --sh1:0 30px 60px -25px rgba(30,50,80,.35); --sh2:0 6px 18px -8px rgba(30,50,80,.22);
+  --orb-op:.55; --grain-op:.04;
+  --chip-on-ink:#04313a;
+  --danger:#e11d48; --ok:#059669;
+  --field:rgba(255,255,255,.6);
+  --tbl:rgba(20,28,38,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;overflow-x:hidden;overflow-x:clip}
+html,body{max-width:100vw}
+body{
+  font-family:var(--font); background:var(--bg0); color:var(--ink);
+  min-height:100dvh; overflow-x:hidden; overflow-x:clip; line-height:1.7;
+  transition:background .5s,color .4s;
+}
+body.locked{overflow:hidden}
+::selection{background:rgba(45,212,191,.35)}
+
+#bg{position:fixed;inset:0;z-index:-2;overflow:hidden;background:
+  radial-gradient(120% 90% at 85% -10%,var(--bg1),transparent 60%),
+  radial-gradient(100% 80% at 0% 110%,var(--bg1),transparent 55%),
+  var(--bg0);}
+#bgimg{position:absolute;inset:-24px;background-size:cover;background-position:center;
+  opacity:0;transition:opacity .6s;transform:scale(1.06);pointer-events:none}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:var(--orb-op);mix-blend-mode:screen;will-change:transform}
+html[data-pal="light"] .orb{mix-blend-mode:multiply;filter:blur(110px)}
+.o1{width:55vmax;height:55vmax;top:-22vmax;right:-15vmax;background:radial-gradient(circle,rgba(45,212,191,.35),transparent 65%);animation:drift1 38s ease-in-out infinite alternate}
+.o2{width:48vmax;height:48vmax;bottom:-20vmax;left:-12vmax;background:radial-gradient(circle,rgba(56,189,248,.30),transparent 65%);animation:drift2 46s ease-in-out infinite alternate}
+.o3{width:34vmax;height:34vmax;top:35%;left:30%;background:radial-gradient(circle,rgba(148,190,255,.18),transparent 60%);animation:drift3 52s ease-in-out infinite alternate}
+@keyframes drift1{to{transform:translate(-12vmax,10vmax) scale(1.15)}}
+@keyframes drift2{to{transform:translate(10vmax,-8vmax) scale(1.1)}}
+@keyframes drift3{to{transform:translate(-8vmax,-10vmax) scale(1.2)}}
+#bg .caustic{position:absolute;inset:-30%;background:conic-gradient(from 0deg,transparent 0 12%,rgba(255,255,255,.045) 16%,transparent 22% 45%,rgba(255,255,255,.035) 52%,transparent 58% 100%);animation:spin 90s linear infinite;mix-blend-mode:screen}
+@keyframes spin{to{transform:rotate(360deg)}}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:var(--grain-op);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg" width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");}
+
+.glass{
+  position:relative; isolation:isolate;
+  background:linear-gradient(150deg,var(--gA),var(--gB) 48%,var(--gA));
+  -webkit-backdrop-filter:blur(22px) saturate(1.6); backdrop-filter:blur(22px) saturate(1.6);
+  border:1px solid var(--g-brd);
+  box-shadow:var(--sh1),var(--sh2),inset 0 1px 0 var(--g-in),inset 0 -1px 0 var(--g-inb);
+}
+.glass::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;padding:1.2px;z-index:1;pointer-events:none;
+  background:linear-gradient(165deg,var(--g-edge) 0%,transparent 28%,transparent 68%,var(--g-edge2) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+}
+.glass-deep{-webkit-backdrop-filter:blur(34px) saturate(1.8) brightness(1.04);backdrop-filter:blur(34px) saturate(1.8) brightness(1.04)}
+.sheen{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:2;opacity:0;transition:opacity .45s;
+  background:radial-gradient(340px circle at var(--mx,50%) var(--my,15%),rgba(255,255,255,.16),transparent 62%);}
+html[data-pal="light"] .sheen{background:radial-gradient(340px circle at var(--mx,50%) var(--my,15%),rgba(255,255,255,.75),transparent 62%)}
+.hov-light:hover .sheen,.card:hover .sheen{opacity:1}
+
+.btn{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:inherit;font-size:14px;font-weight:600;color:var(--ink);
+  padding:11px 18px;border-radius:var(--r-s);cursor:pointer;border:1px solid var(--g-brd);
+  background:linear-gradient(160deg,var(--gA),var(--gB));
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  box-shadow:0 8px 20px -10px rgba(0,0,0,.4),inset 0 1px 0 var(--g-in);
+  transition:transform .22s var(--ease),box-shadow .25s,filter .25s;overflow:hidden;
+}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.btn:active{transform:translateY(0) scale(.97)}
+.btn svg{width:17px;height:17px}
+.btn-p{background:var(--acc-grad);color:#04222a;border-color:transparent;font-weight:800;
+  box-shadow:0 12px 28px -10px rgba(45,212,191,.55),inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 6px rgba(4,60,60,.25);}
+.btn-p::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.4),transparent 45%);pointer-events:none}
+.btn-d{color:var(--danger)}
+.btn-sm{padding:8px 13px;font-size:13px;border-radius:11px}
+.ibtn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:12px;
+  border:1px solid var(--g-brd);background:linear-gradient(160deg,var(--gA),var(--gB));color:var(--ink2);cursor:pointer;
+  transition:.22s var(--ease);flex:0 0 auto}
+.ibtn:hover{color:var(--ink);transform:translateY(-1px);filter:brightness(1.1)}
+.ibtn:active{transform:scale(.92)}
+.ibtn svg{width:17px;height:17px}
+.ibtn:disabled{opacity:.3;pointer-events:none}
+
+.topbar{position:sticky;top:12px;z-index:50;margin:12px auto 0;max-width:1180px;border-radius:var(--r-l);
+  padding:12px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:12px;font-weight:900;font-size:17px;min-width:0}
+.logo-ico{width:44px;height:44px;border-radius:15px;background:var(--acc-grad);display:grid;place-items:center;color:#04222a;
+  box-shadow:0 10px 22px -8px rgba(45,212,191,.6),inset 0 1px 0 rgba(255,255,255,.6);position:relative;overflow:hidden;flex:0 0 auto}
+.logo-ico::after{content:"";position:absolute;inset:0;background:linear-gradient(200deg,rgba(255,255,255,.65),transparent 40%)}
+.logo-ico svg{width:24px;height:24px;position:relative;z-index:1}
+.logo small{display:block;font-weight:500;font-size:11px;color:var(--ink3)}
+.searchbox{flex:1;min-width:210px;display:flex;align-items:center;gap:10px;border-radius:16px;padding:0 14px;height:46px;
+  background:var(--field);border:1px solid var(--g-brd);box-shadow:inset 0 2px 6px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.15);
+  transition:.3s}
+.searchbox:focus-within{border-color:rgba(45,212,191,.55);box-shadow:inset 0 2px 6px rgba(0,0,0,.1),0 0 0 4px rgba(45,212,191,.14)}
+.searchbox svg{width:18px;height:18px;color:var(--ink3);flex:0 0 auto}
+.searchbox input{flex:1;background:none;border:none;outline:none;font-family:inherit;font-size:14px;color:var(--ink);min-width:0}
+.searchbox input::placeholder{color:var(--ink3)}
+.topacts{display:flex;gap:8px;align-items:center;position:relative;margin-inline-start:auto}
+
+.menu-pop{position:absolute;top:calc(100% + 10px);inset-inline-end:0;min-width:230px;max-width:calc(100vw - 24px);
+  border-radius:var(--r-m);padding:8px;z-index:60;
+  opacity:0;transform:translateY(-8px) scale(.97);pointer-events:none;transition:.28s var(--ease)}
+.menu-pop.on{opacity:1;transform:none;pointer-events:auto}
+.menu-pop button{display:flex;width:100%;gap:10px;align-items:center;padding:11px 13px;border:none;background:none;border-radius:12px;
+  font-family:inherit;font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer;text-align:right;transition:.2s}
+.menu-pop button:hover{background:rgba(45,212,191,.14)}
+.menu-pop button svg{width:17px;height:17px;color:var(--ink2);flex:0 0 auto}
+.menu-pop hr{border:none;border-top:1px solid var(--tbl);margin:6px 8px}
+
+main{max-width:1180px;margin:0 auto;padding:22px 16px 130px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.stat{border-radius:var(--r-m);padding:16px 18px;cursor:pointer;transition:transform .3s var(--ease),filter .3s;overflow:hidden}
+.stat:hover{transform:translateY(-3px);filter:brightness(1.07)}
+.stat .num{font-size:27px;font-weight:900;background:linear-gradient(180deg,var(--ink),var(--ink2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.stat .lbl{font-size:12.5px;color:var(--ink2);font-weight:600;display:flex;align-items:center;gap:7px}
+.stat .dot{width:9px;height:9px;border-radius:50%;box-shadow:0 0 10px currentColor}
+
+.shelf{margin-bottom:24px}
+.shelf h3{font-size:13.5px;color:var(--ink2);font-weight:700;margin:0 6px 10px;display:flex;align-items:center;gap:8px}
+.shelf-row{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);mask-image:linear-gradient(90deg,#000 92%,transparent)}
+.shelf-row::-webkit-scrollbar{display:none}
+.mini{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:16px;cursor:pointer;transition:.25s var(--ease);overflow:hidden}
+.mini:hover{transform:translateY(-2px)}
+.mini .cnt{font-size:11px;font-weight:800;color:#04222a;background:var(--acc-grad);border-radius:99px;padding:2px 9px}
+.mini .nm{font-size:13px;font-weight:700;white-space:nowrap}
+
+.chips{display:flex;gap:9px;overflow-x:auto;padding:4px 2px 14px;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);mask-image:linear-gradient(90deg,#000 92%,transparent)}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;padding:9px 18px;border-radius:99px;font-size:13px;font-weight:700;cursor:pointer;
+  border:1px solid var(--g-brd);color:var(--ink2);background:linear-gradient(160deg,var(--gA),var(--gB));
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  box-shadow:inset 0 1px 0 var(--g-in);transition:.25s var(--ease)}
+.chip:hover{color:var(--ink);transform:translateY(-1px)}
+.chip.on{background:var(--acc-grad);color:var(--chip-on-ink);border-color:transparent;
+  box-shadow:0 8px 20px -8px rgba(45,212,191,.55),inset 0 1px 0 rgba(255,255,255,.5)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(252px,1fr));gap:18px}
+.card{border-radius:var(--r-l);overflow:hidden;cursor:pointer;transition:transform .35s var(--ease),box-shadow .35s;
+  animation:cardin .55s var(--ease) backwards}
+@keyframes cardin{from{opacity:0;transform:translateY(18px) scale(.97)}}
+.card:hover{transform:translateY(-6px);box-shadow:var(--sh1),0 18px 40px -18px rgba(45,212,191,.35),inset 0 1px 0 var(--g-in)}
+.card-img{position:relative;height:158px;overflow:hidden}
+.card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s var(--ease)}
+.card:hover .card-img img{transform:scale(1.05)}
+.card-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.12),transparent 30%,transparent 60%,rgba(0,0,0,.35));pointer-events:none}
+.ph{width:100%;height:100%;display:grid;place-items:center;position:relative}
+.ph svg{width:46px;height:46px;color:rgba(255,255,255,.85);position:relative;z-index:1;filter:drop-shadow(0 4px 10px rgba(0,0,0,.3))}
+.ph::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 130% at 80% -10%,rgba(255,255,255,.35),transparent 55%)}
+.ph[data-c="ژلکوت"]{background:linear-gradient(140deg,#134e4a,#0e7490 60%,#155e75)}
+.ph[data-c="رزین"]{background:linear-gradient(140deg,#1e293b,#334155 55%,#1f2a3d)}
+.ph[data-c="مخلوط ونیل"]{background:linear-gradient(140deg,#065f46,#0d9488 60%,#115e59)}
+.ph[data-c="x"]{background:linear-gradient(140deg,#3f3f46,#52525b 60%,#374151)}
+.badge{position:absolute;top:12px;inset-inline-start:12px;z-index:3;font-size:11px;font-weight:800;padding:5px 12px;border-radius:99px;
+  background:rgba(10,16,24,.42);color:#fff;border:1px solid rgba(255,255,255,.28);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.cdots{position:absolute;top:12px;inset-inline-end:12px;z-index:3;display:flex;gap:4px}
+.cdot{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.75);box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.favbtn{position:absolute;bottom:10px;inset-inline-end:12px;z-index:4;width:38px;height:38px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.35);background:rgba(10,16,24,.42);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  color:#fff;font-size:17px;line-height:1;cursor:pointer;transition:.25s var(--ease)}
+.favbtn:active{transform:scale(.82)}
+.favbtn.on{color:#fbbf24;text-shadow:0 0 14px rgba(251,191,36,.9);border-color:rgba(251,191,36,.5)}
+.card-body{padding:15px 16px 14px;position:relative;z-index:2}
+.card-body h3{font-size:15.5px;font-weight:800;margin-bottom:3px}
+.card-body .ds{font-size:12px;color:var(--ink2);min-height:20px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.cmeta{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.tag{font-size:10.8px;font-weight:700;color:var(--ink2);padding:4px 10px;border-radius:99px;background:var(--field);border:1px solid var(--tbl)}
+.cacts{display:flex;gap:8px;margin-top:13px;padding-top:12px;border-top:1px solid var(--tbl)}
+.cacts .btn{flex:1;padding:9px}
+.cacts .ibtn{width:40px;height:40px}
+
+.empty{grid-column:1/-1;text-align:center;padding:70px 20px;border-radius:var(--r-l)}
+.empty svg{width:54px;height:54px;color:var(--ink3);margin-bottom:12px}
+.empty p{color:var(--ink2);font-weight:600}
+
+.fab{position:fixed;bottom:calc(22px + env(safe-area-inset-bottom));inset-inline-end:22px;z-index:45;
+  display:flex;align-items:center;gap:9px;padding:15px 24px;border-radius:99px;border:none;cursor:pointer;
+  font-family:inherit;font-size:15px;font-weight:800;color:#04222a;background:var(--acc-grad);
+  box-shadow:0 18px 40px -12px rgba(45,212,191,.65),inset 0 1px 0 rgba(255,255,255,.6),inset 0 -3px 8px rgba(4,60,60,.25);
+  transition:.3s var(--ease);overflow:hidden}
+.fab::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.45),transparent 50%)}
+.fab:hover{transform:translateY(-3px) scale(1.02)}
+.fab:active{transform:scale(.95)}
+.fab svg{width:19px;height:19px;position:relative;z-index:1}
+.fab span{position:relative;z-index:1}
+
+.overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:18px;
+  background:rgba(5,8,14,.45);-webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);
+  opacity:0;transition:opacity .3s}
+.overlay.on{opacity:1}
+.sheet{position:relative;width:100%;max-width:680px;max-height:92dvh;overflow-y:auto;overflow-x:hidden;
+  border-radius:var(--r-l);transform:translateY(26px) scale(.965);opacity:0;transition:.38s var(--ease);
+  scrollbar-width:thin;overscroll-behavior:contain}
+.sheet.wide{max-width:780px}
+.overlay.on .sheet{transform:none;opacity:1}
+.sheet::-webkit-scrollbar{width:5px}
+.sheet::-webkit-scrollbar-thumb{background:rgba(140,160,180,.4);border-radius:99px}
+.sheet-x{position:absolute;top:14px;inset-inline-end:14px;z-index:20}
+.sheet-pad{padding:26px 24px 24px}
+.sheet h2{font-size:19px;font-weight:900;display:flex;align-items:center;gap:10px}
+.sheet h2 svg{width:21px;height:21px;color:var(--accent-a)}
+.sub{font-size:12.5px;color:var(--ink2);margin-top:3px}
+.grab{display:none}
+@media (max-width:640px){
+  .overlay{padding:0;align-items:flex-end}
+  .sheet{max-width:none;max-height:94dvh;border-radius:26px 26px 0 0;transform:translateY(100%)}
+  .grab{display:block;width:44px;height:5px;border-radius:99px;background:var(--ink3);margin:10px auto 0;opacity:.6}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+
+.d-hero{position:relative;height:230px;overflow:hidden;border-radius:26px 26px 0 0}
+.d-hero img,.d-hero .ph{width:100%;height:100%;object-fit:cover}
+.d-hero .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.1),transparent 35%,rgba(4,8,14,.72));display:flex;flex-direction:column;justify-content:flex-end;padding:20px 24px}
+.d-hero h2{color:#fff;font-size:22px;font-weight:900;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+.d-hero .bdgs{display:flex;gap:7px;margin-top:8px;flex-wrap:wrap}
+.dmeta{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:18px 0}
+.dtile{border-radius:16px;padding:12px 14px;background:var(--field);border:1px solid var(--tbl);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.dtile .k{font-size:11px;color:var(--ink3);font-weight:700}
+.dtile .v{font-size:14px;font-weight:800;margin-top:2px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.seg{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}
+.seg button{padding:8px 16px;border-radius:99px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;
+  border:1px solid var(--g-brd);background:var(--field);color:var(--ink2);transition:.22s}
+.seg button.on{background:var(--acc-grad);color:var(--chip-on-ink);border-color:transparent}
+.mtable{width:100%;border-collapse:separate;border-spacing:0 7px;font-size:13px}
+.mtable th{font-size:11px;color:var(--ink3);font-weight:700;text-align:right;padding:0 12px 2px}
+.mtable td{padding:11px 12px;background:var(--field);border-top:1px solid var(--tbl);border-bottom:1px solid var(--tbl)}
+.mtable td:first-child{border-inline-start:1px solid var(--tbl);border-radius:0 12px 12px 0;font-weight:700}
+.mtable td:last-child{border-inline-end:1px solid var(--tbl);border-radius:12px 0 0 12px}
+.mtable tr.baserow td{background:linear-gradient(90deg,rgba(45,212,191,.14),var(--field))}
+.mtable tr.vrow td{background:linear-gradient(90deg,rgba(56,189,248,.12),var(--field))}
+.pct{font-size:11px;color:var(--ink2);font-weight:700;background:var(--tbl);padding:2px 9px;border-radius:99px}
+.bmark{font-size:10px;font-weight:800;color:#04222a;background:var(--acc-grad);padding:2px 8px;border-radius:99px;margin-inline-start:7px}
+.batchbar{display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:16px;padding:14px 18px;margin-top:14px;overflow:hidden;flex-wrap:wrap}
+.batchbar .n{font-size:21px;font-weight:900}
+.batchbar .l{font-size:11.5px;color:var(--ink2);font-weight:700}
+.note{font-size:11.5px;color:var(--ink3);margin-top:9px;line-height:1.9}
+.calcbox{margin-top:20px;border-radius:var(--r-m);padding:18px;position:relative;overflow:hidden}
+.calcbox h4{font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.calcbox h4 svg{width:17px;height:17px;color:var(--accent-a)}
+.calc-in{display:flex;gap:9px;margin-top:12px;flex-wrap:wrap}
+.calc-in input,.calc-in select{height:46px}
+.presets{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.presets button{border-radius:99px;border:1px solid var(--tbl);background:var(--field);color:var(--ink2);font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;cursor:pointer;transition:.2s}
+.presets button:hover{color:var(--ink);border-color:rgba(45,212,191,.5)}
+.dactions{display:flex;gap:9px;margin-top:20px;flex-wrap:wrap}
+.dactions .btn{flex:1;min-width:120px}
+
+.f-lbl{display:block;font-size:12.5px;font-weight:800;color:var(--ink2);margin:17px 0 7px}
+.f-in{width:100%;height:47px;border-radius:14px;border:1px solid var(--g-brd);background:var(--field);color:var(--ink);
+  font-family:inherit;font-size:14px;padding:0 15px;outline:none;transition:.25s;
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.1)}
+textarea.f-in{height:auto;min-height:74px;padding:12px 15px;resize:vertical}
+.f-in:focus{border-color:rgba(45,212,191,.6);box-shadow:inset 0 2px 5px rgba(0,0,0,.08),0 0 0 4px rgba(45,212,191,.14)}
+input[type=number]{direction:ltr;text-align:center}
+.f-in.ltr{direction:ltr;text-align:left}
+select.f-in{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ink2) 50%),linear-gradient(135deg,var(--ink2) 50%,transparent 50%);
+  background-position:calc(0% + 18px) 50%,calc(0% + 13px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-inline-start:34px}
+.frow{display:flex;gap:10px}.frow>*{flex:1;min-width:0}
+.mrow .f-in{min-width:0}
+.calc-in>*{min-width:0}
+.edsec{margin-top:24px;padding-top:20px;border-top:1px solid var(--tbl)}
+.edsec h4{font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.edsec h4 svg{width:17px;height:17px;color:var(--accent-a)}
+.edsec h4 .sp{flex:1}
+.mrow{display:flex;gap:8px;align-items:center;margin-bottom:9px;animation:cardin .35s var(--ease)}
+.mrow .mi-name{flex:2.2;min-width:0}.mrow .mi-amt{flex:1}.mrow .mi-unit{flex:1.4}
+.mrow .mrow-btns{display:flex;gap:4px}
+.mrow .ibtn{width:34px;height:34px;border-radius:10px}
+.variant-card{border-radius:18px;padding:15px;margin-bottom:13px;background:var(--field);border:1px solid var(--tbl);position:relative}
+.variant-card .vh{display:flex;gap:9px;margin-bottom:11px;align-items:center}
+.variant-card .vh input{flex:1}
+.addline{margin-top:4px}
+.imgbox{position:relative;border-radius:18px;overflow:hidden;height:190px;border:1px solid var(--g-brd);
+  display:grid;place-items:center;cursor:pointer;transition:.3s;background:var(--field)}
+.imgbox:hover{filter:brightness(1.07)}
+.imgbox img{width:100%;height:100%;object-fit:cover}
+.imgbox .hint{display:flex;flex-direction:column;align-items:center;gap:9px;color:var(--ink3);font-size:12.5px;font-weight:700;text-align:center}
+.imgbox .hint svg{width:34px;height:34px}
+.imgbtns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.imgbtns .btn{flex:1;min-width:0}
+.colorrow{display:flex;gap:10px;align-items:center}
+.colorrow input[type=color]{width:52px;height:47px;border-radius:14px;border:1px solid var(--g-brd);background:var(--field);padding:4px;cursor:pointer;flex:0 0 auto}
+
+.cropwrap{padding:20px 22px 24px}
+#cropCv{width:100%;border-radius:18px;display:block;touch-action:none;cursor:grab;border:1px solid var(--g-brd)}
+#cropCv:active{cursor:grabbing}
+.zoomrow{display:flex;align-items:center;gap:12px;margin-top:15px}
+input[type=range]{flex:1;appearance:none;-webkit-appearance:none;height:6px;border-radius:99px;background:var(--tbl);outline:none;min-width:0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:var(--acc-grad);
+  box-shadow:0 4px 12px rgba(45,212,191,.5),inset 0 1px 0 rgba(255,255,255,.6);cursor:pointer}
+
+#toasts{position:fixed;bottom:calc(96px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:9px;align-items:center;pointer-events:none;width:max-content;max-width:94vw}
+.toast{padding:12px 22px;border-radius:99px;font-size:13px;font-weight:700;display:flex;gap:9px;align-items:center;
+  animation:tin .4s var(--ease);white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
+.toast.out{animation:tout .35s forwards}
+.toast .tdot{width:9px;height:9px;border-radius:50%;flex:0 0 auto}
+@keyframes tin{from{opacity:0;transform:translateY(16px) scale(.9)}}
+@keyframes tout{to{opacity:0;transform:translateY(10px) scale(.94)}}
+
+.ghstat{margin-top:12px;font-size:12px;font-weight:700;color:var(--ink2);min-height:20px}
+
+@media (max-width:760px){
+  .topbar{top:8px;margin:8px 10px 0;padding:10px 12px;gap:9px;border-radius:var(--r-m)}
+  .logo{flex:1;font-size:15px}
+  .logo-ico{width:38px;height:38px;border-radius:12px}
+  .logo-ico svg{width:20px;height:20px}
+  .searchbox{order:4;flex:1 1 100%;min-width:0;height:42px}
+  main{padding:14px 10px 120px}
+  .sheet-pad{padding:20px 14px}
+  .d-hero{height:190px}
+  .stat .num{font-size:23px}
+}
+@media (max-width:480px){
+  .mtable th:nth-child(4),.mtable td:nth-child(4){display:none}
+  .mtable td{padding:9px 9px}
+  .stats{gap:9px}
+  .grid{gap:13px}
+  .dactions .btn{min-width:0;flex:1 1 45%}
+  .stat{padding:13px 14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<div id="bg">
+  <div id="bgimg"></div>
+  <div class="caustic"></div>
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+</div>
+<div class="grain"></div>
+
+<header class="topbar glass glass-deep">
+  <div class="sheen"></div>
+  <div class="logo">
+    <div class="logo-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.7s6.5 7 6.5 12a6.5 6.5 0 0 1-13 0c0-5 6.5-12 6.5-12Z"/></svg></div>
+    <div>فرمول‌یار<small>مدیریت فرمول‌های سینک گرانیتی</small></div>
+  </div>
+  <div class="searchbox">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="جستجوی فرمول، ماده، رنگ…">
+  </div>
+  <div class="topacts">
+    <button class="ibtn" id="themeBtn" title="تغییر تم"></button>
+    <button class="ibtn" id="menuBtn" title="امکانات"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="19" r="1.7"/></svg></button>
+    <div class="menu-pop glass glass-deep" id="menuPop">
+      <button id="miGh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M7 18a5 5 0 1 1 .9-9.9A6 6 0 0 1 19.5 10 4 4 0 0 1 18 18H7Z"/></svg>همگام‌سازی گیت‌هاب (data.json)</button>
+      <button id="miMats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M9 3h6M10 3v5L4.5 18a2.5 2.5 0 0 0 2.2 3.5h10.6a2.5 2.5 0 0 0 2.2-3.5L14 8V3"/><path d="M7.5 14h9"/></svg>مدیریت مواد اولیه</button>
+      <button id="miBg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m5 19 5-5 3 3 4-4 3 3"/></svg>پس‌زمینه و رنگ متن</button>
+      <button id="miExport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>خروجی پشتیبان (JSON)</button>
+      <button id="miImport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15V3m0 0 4 4m-4-4L8 7M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>بازیابی از پشتیبان</button>
+      <button id="miInstall" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M12 11v4m-2-2 2 2 2-2"/></svg>نصب روی دستگاه</button>
+      <hr>
+      <button id="miReset" style="color:var(--danger)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg>پاک‌کردن همه فرمول‌ها</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="stats" id="stats"></section>
+  <div id="shelves"></div>
+  <div class="chips" id="chips"></div>
+  <section class="grid" id="grid"></section>
+</main>
+
+<button class="fab" id="fab">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+  <span>فرمول جدید</span>
+</button>
+
+<div id="toasts"></div>
+<input type="file" id="fileGal" accept="image/*" hidden>
+<input type="file" id="fileCam" accept="image/*" capture="environment" hidden>
+<input type="file" id="fileImp" accept=".json,application/json" hidden>
+<input type="file" id="fileBg" accept="image/*" hidden>
+
+<script>
+"use strict";
+/* =========================================================
+   بخش ۱ — ابزارها
+========================================================= */
+const LS_KEY = "granit.formulas.v2";
+const LS_SET = "granit.settings.v1";
+const UNITS  = ["گرم","کیلوگرم","میلی‌گرم","لیتر","میلی‌لیتر","عدد","درب نوشابه","لیوان یکبار مصرف"];
+const KG_F   = {"گرم":.001,"کیلوگرم":1,"میلی‌گرم":1e-6};
+const BASE_CAT = ["ژلکوت","رزین","مخلوط ونیل"];
+const DAY = 864e5;
+
+const uid  = () => "id" + Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
+const esc  = s => String(s??"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const clone= o => JSON.parse(JSON.stringify(o));
+const toKg = (a,u) => (KG_F[u]==null||a==null||isNaN(a)) ? null : a*KG_F[u];
+const norm = s => String(s||"").replace(/ي/g,"ی").replace(/ك/g,"ک").toLowerCase().trim();
+
+function trimNum(n){
+  if(!isFinite(n)) return "—";
+  const v = Math.round(n*1000)/1000;
+  return v.toLocaleString("fa-IR",{maximumFractionDigits:3});
+}
+const fmtKg = kg => kg>=1 ? trimNum(kg)+" کیلوگرم" : trimNum(kg*1000)+" گرم";
+const faDate = ts => new Intl.DateTimeFormat("fa-IR",{dateStyle:"medium"}).format(ts);
+function rel(ts){
+  if(!ts) return "—";
+  const d = Math.floor((Date.now()-ts)/DAY);
+  if(d<1) return "امروز"; if(d<2) return "دیروز"; if(d<7) return trimNum(d)+" روز پیش";
+  return new Date(ts).toLocaleDateString("fa-IR");
+}
+
+const I = {
+  eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></svg>',
+  pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m16.5 3.5 4 4L7 21l-5 1 1-5L16.5 3.5Z"/></svg>',
+  trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13M10 11v6m4-6v6"/></svg>',
+  copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="8" y="8" width="13" height="13" rx="3"/><path d="M16 4H6a3 3 0 0 0-3 3v10"/></svg>',
+  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  up:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="m6 14 6-6 6 6"/></svg>',
+  dn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="m6 10 6 6 6-6"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>',
+  cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 8h3l2-3h6l2 3h3v11H4V8Z"/><circle cx="12" cy="13" r="3.2"/></svg>',
+  img:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m5 19 5-5 3 3 4-4 3 3"/></svg>',
+  calc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M8 7h8M8 12h2m4 0h2M8 16h2m4 0h2"/></svg>',
+  hist:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/><path d="M12 8v4l3 2"/></svg>',
+  drop:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 2.7s6.5 7 6.5 12a6.5 6.5 0 0 1-13 0c0-5 6.5-12 6.5-12Z"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m5 13 4 4L19 7"/></svg>',
+  moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z"/></svg>',
+  sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.5 4.5l1.8 1.8M17.7 17.7l1.8 1.8M4.5 19.5l1.8-1.8M17.7 6.3l1.8-1.8"/></svg>'
+};
+
+/* =========================================================
+   بخش ۲ — Store
+========================================================= */
+const Store = {
+  load(){ try{ const d = JSON.parse(localStorage.getItem(LS_KEY)); if(d && Array.isArray(d.formulas)) return d; }catch(e){} return null; },
+  save(db){ localStorage.setItem(LS_KEY, JSON.stringify(db)); },
+  loadSet(){ try{ return JSON.parse(localStorage.getItem(LS_SET))||{}; }catch(e){ return {}; } },
+  saveSet(s){ localStorage.setItem(LS_SET, JSON.stringify(s)); }
+};
+
+function starterMaterials(){
+  const M=(name,unit)=>({id:uid(),name,unit});
+  return [
+    M("ژلکوت","کیلوگرم"), M("رزین","کیلوگرم"), M("سیلیس","کیلوگرم"),
+    M("مخلوط ونیل","کیلوگرم"), M("ونیل استیر","کیلوگرم"), M("تیتانیوم اکسید","کیلوگرم"),
+    M("اروزیل","گرم"), M("کبالت","گرم"), M("خمیر رنگ مشکی","گرم")
+  ];
+}
+
+let DB = Store.load();
+if(!DB){ DB = { formulas: [], categories: [...BASE_CAT], materials: starterMaterials() }; Store.save(DB); }
+DB.materials  = DB.materials  || [];
+DB.categories = [...new Set([...BASE_CAT, ...(DB.categories||[])])];
+
+let SET = Store.loadSet();
+if(!SET.theme) SET.theme = "dark";
+
+function save(){ Store.save(DB); queuePush(); }
+
+function exportData(){
+  return { app:"granite-sink-formulas", version:2, updatedAt:new Date().toISOString(),
+    categories:DB.categories, materials:DB.materials, formulas:DB.formulas };
+}
+
+/* =========================================================
+   بخش ۳ — منطق دامنه
+========================================================= */
+function findF(id){ return DB.formulas.find(f=>f.id===id); }
+
+function comboMats(f, variantId){
+  const arr = [{ id:"base", name:f.base.name, amount:f.base.amount, unit:f.base.unit, isBase:true }];
+  (f.materials||[]).forEach(m=>arr.push({...m}));
+  if(variantId){
+    const v = (f.variants||[]).find(x=>x.id===variantId);
+    if(v) (v.materials||[]).forEach(m=>arr.push({...m, variant:v.name}));
+  }
+  return arr;
+}
+function batchKg(f, variantId){
+  let kg=0, skipped=0;
+  comboMats(f,variantId).forEach(m=>{ const k=toKg(m.amount,m.unit); if(k==null) skipped++; else kg+=k; });
+  return {kg,skipped};
+}
+function calcFactor(f, newAmt, newUnit){
+  const kOld = toKg(f.base.amount, f.base.unit);
+  const kNew = toKg(newAmt, newUnit);
+  if(kOld>0 && kNew!=null) return kNew/kOld;
+  return f.base.amount>0 ? newAmt/f.base.amount : 1;
+}
+function matches(f, q){
+  if(!q) return true;
+  const hay = [f.name, f.description, f.category, f.color?.name, f.base?.name,
+    ...(f.materials||[]).map(m=>m.name),
+    ...((f.variants||[]).flatMap(v=>[v.name, ...(v.materials||[]).map(m=>m.name)]))
+  ].map(norm).join(" | ");
+  return q.split(/\s+/).every(part=>hay.includes(part));
+}
+function libUnit(name){
+  const m = DB.materials.find(x=>norm(x.name)===norm(name));
+  return m ? m.unit : null;
+}
+
+/* =========================================================
+   بخش ۴ — رندر
+========================================================= */
+const ui = { q:"", filter:"همه" };
+const $ = s => document.querySelector(s);
+const grid=$("#grid"), chipsEl=$("#chips"), statsEl=$("#stats"), shelvesEl=$("#shelves");
+
+function visibleList(){
+  let list = DB.formulas.slice();
+  if(ui.filter==="⭐ علاقه‌مندی‌ها") list = list.filter(f=>f.fav);
+  else if(ui.filter==="رنگ‌ها") list = list.filter(f=>(f.tags||[]).includes("رنگ"));
+  else if(ui.filter!=="همه") list = list.filter(f=>f.category===ui.filter);
+  list = list.filter(f=>matches(f, norm(ui.q)));
+  return list.sort((a,b)=>((b.fav?1:0)-(a.fav?1:0)) || (b.updatedAt||0)-(a.updatedAt||0));
+}
+
+function renderStats(){
+  const cnt = c => DB.formulas.filter(f=>f.category===c).length;
+  const tiles = [
+    {f:"همه", n:DB.formulas.length, l:"کل فرمول‌ها", c:"var(--accent-a)"},
+    ...BASE_CAT.map(c=>({f:c, n:cnt(c), l:c, c:c==="ژلکوت"?"#2dd4bf":c==="رزین"?"#8ab4f8":"#34d399"}))
+  ];
+  statsEl.innerHTML = tiles.map(t=>`
+    <div class="stat glass hov-light" data-f="${esc(t.f)}">
+      <div class="sheen"></div>
+      <div class="num">${trimNum(t.n)}</div>
+      <div class="lbl"><span class="dot" style="background:${t.c};color:${t.c}"></span>${esc(t.l)}</div>
+    </div>`).join("");
+  statsEl.querySelectorAll(".stat").forEach(el=>el.onclick=()=>{ ui.filter=el.dataset.f; renderAll(); });
+}
+
+function renderChips(){
+  const cats = ["همه","⭐ علاقه‌مندی‌ها", ...DB.categories, "رنگ‌ها"];
+  chipsEl.innerHTML = cats.map(c=>`<button class="chip ${ui.filter===c?"on":""}" data-c="${esc(c)}">${esc(c)}</button>`).join("");
+  chipsEl.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{ ui.filter=b.dataset.c; renderAll(); });
+}
+
+function renderShelves(){
+  const recent = DB.formulas.filter(f=>f.lastUsedAt).sort((a,b)=>b.lastUsedAt-a.lastUsedAt).slice(0,6);
+  const pop = DB.formulas.filter(f=>f.useCount>0).sort((a,b)=>b.useCount-a.useCount).slice(0,6);
+  let h = "";
+  const mini = f => `<div class="mini glass hov-light" data-id="${f.id}"><div class="sheen"></div><span class="nm">${esc(f.name)}</span><span class="cnt">${trimNum(f.useCount)}×</span></div>`;
+  if(recent.length) h += `<div class="shelf"><h3>⏱ آخرین استفاده‌ها</h3><div class="shelf-row">${recent.map(mini).join("")}</div></div>`;
+  if(pop.length)    h += `<div class="shelf"><h3>★ پرکاربردها</h3><div class="shelf-row">${pop.map(mini).join("")}</div></div>`;
+  shelvesEl.innerHTML = h;
+  shelvesEl.querySelectorAll(".mini").forEach(m=>m.onclick=()=>openDetail(m.dataset.id));
+}
+
+function imgBlock(f, cls){
+  if(f.image) return `<img src="${f.image}" alt="${esc(f.name)}" loading="lazy">`;
+  const cat = DB.categories.includes(f.category)?f.category:"x";
+  return `<div class="ph ${cls||""}" data-c="${esc(cat)}">${I.drop}</div>`;
+}
+function cdots(f){
+  if(!f.color) return "";
+  const d = hex => `<span class="cdot" style="background:${hex}"></span>`;
+  return `<div class="cdots">${d(f.color.hex)}${f.color.hex2?d(f.color.hex2):""}</div>`;
+}
+function matCount(f){
+  return 1 + (f.materials||[]).length + (f.variants||[]).reduce((s,v)=>s+(v.materials||[]).length,0);
+}
+
+function renderGrid(){
+  const list = visibleList();
+  if(!list.length){
+    const none = DB.formulas.length===0;
+    grid.innerHTML = `<div class="empty glass"><div class="sheen"></div>${I.eye}<p>${
+      none ? "هنوز فرمولی نساخته‌اید.<br>از منوی بالا «مدیریت مواد اولیه» موادتان را تعریف کنید،<br>سپس با دکمه «فرمول جدید» اولین فرمول را بسازید."
+           : "فرمولی پیدا نشد.<br>فیلتر یا جستجو را عوض کنید."
+    }</p></div>`;
+    return;
+  }
+  grid.innerHTML = list.map((f,i)=>`
+    <article class="card glass" data-id="${f.id}" style="animation-delay:${Math.min(i,10)*45}ms">
+      <div class="sheen"></div>
+      <div class="card-img">
+        ${imgBlock(f)}
+        <span class="badge">${esc(f.category)}</span>
+        ${cdots(f)}
+        <button class="favbtn ${f.fav?"on":""}" data-act="fav" title="علاقه‌مندی">★</button>
+      </div>
+      <div class="card-body">
+        <h3>${esc(f.name)}</h3>
+        <p class="ds">${esc(f.description)||"&nbsp;"}</p>
+        <div class="cmeta">
+          <span class="tag">مبنا: ${trimNum(f.base.amount)} ${esc(f.base.unit)}</span>
+          <span class="tag">${trimNum(matCount(f))} ماده</span>
+          <span class="tag">ویرایش: ${rel(f.updatedAt)}</span>
+        </div>
+        <div class="cacts">
+          <button class="btn btn-sm" data-act="view">${I.eye} مشاهده</button>
+          <button class="ibtn" data-act="edit" title="ویرایش">${I.pen}</button>
+          <button class="ibtn danger" data-act="del" title="حذف">${I.trash}</button>
+        </div>
+      </div>
+    </article>`).join("");
+}
+
+function renderMatLib(){
+  let dl = $("#matLibList");
+  if(!dl){ dl=document.createElement("datalist"); dl.id="matLibList"; document.body.appendChild(dl); }
+  dl.innerHTML = DB.materials.map(m=>`<option value="${esc(m.name)}"></option>`).join("");
+}
+
+function renderAll(){ renderStats(); renderChips(); renderShelves(); renderGrid(); renderMatLib(); }
+
+document.addEventListener("pointermove", e=>{
+  const t = e.target.closest(".glass");
+  if(!t) return;
+  const r = t.getBoundingClientRect();
+  t.style.setProperty("--mx", ((e.clientX-r.left)/r.width*100)+"%");
+  t.style.setProperty("--my", ((e.clientY-r.top)/r.height*100)+"%");
+}, {passive:true});
+
+/* =========================================================
+   بخش ۵ — مودال‌ها
+========================================================= */
+const stack = [];
+function openModal(html, opts={}){
+  const ov = document.createElement("div"); ov.className="overlay";
+  const sh = document.createElement("div"); sh.className="sheet glass glass-deep"+(opts.wide?" wide":"");
+  sh.innerHTML = `<div class="grab"></div><button class="ibtn sheet-x" data-close>${I.x}</button><div class="sheen"></div>` + html;
+  ov.appendChild(sh); document.body.appendChild(ov);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>ov.classList.add("on")));
+  stack.push(ov); document.body.classList.add("locked");
+  ov.addEventListener("click", e=>{ if(e.target===ov || e.target.closest("[data-close]")) closeTop(); });
+  if(opts.mount) opts.mount(sh);
+  return sh;
+}
+function closeTop(){
+  const ov = stack.pop(); if(!ov) return;
+  ov.classList.remove("on");
+  setTimeout(()=>ov.remove(), 360);
+  if(!stack.length) document.body.classList.remove("locked");
+}
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeTop(); });
+
+function confirmDlg(title, msg, buttons){
+  return new Promise(res=>{
+    const sh = openModal(`
+      <div class="sheet-pad" style="max-width:430px;margin:0 auto">
+        <h2>${esc(title)}</h2>
+        <p class="sub" style="margin-top:10px;font-size:13.5px;line-height:2">${esc(msg)}</p>
+        <div class="dactions">
+          ${buttons.map(b=>`<button class="btn ${b.cls||""}" data-k="${b.k}">${b.label}</button>`).join("")}
+        </div>
+      </div>`);
+    sh.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{ closeTop(); res(b.dataset.k); });
+  });
+}
+
+function toast(msg, type="ok"){
+  const t = document.createElement("div");
+  t.className = "toast glass glass-deep";
+  const c = type==="ok" ? "var(--ok)" : type==="err" ? "var(--danger)" : "var(--accent-a)";
+  t.innerHTML = `<span class="tdot" style="background:${c};box-shadow:0 0 10px ${c}"></span>${esc(msg)}`;
+  $("#toasts").appendChild(t);
+  setTimeout(()=>{ t.classList.add("out"); setTimeout(()=>t.remove(),380); }, 2600);
+}
+
+/* =========================================================
+   بخش ۶ — جزئیات + ماشین‌حساب
+========================================================= */
+let dState = { id:null, variant:null };
+
+function openDetail(id){
+  const f = findF(id); if(!f) return;
+  dState = { id, variant:(f.variants&&f.variants[0]) ? f.variants[0].id : null };
+  const sh = openModal(`<div id="droot"></div>`, {wide:true});
+  mountDetail(sh);
+}
+function mountDetail(sh){
+  const f = findF(dState.id); if(!f){ closeTop(); return; }
+  const v = f.variants||[];
+  const combo = comboMats(f, dState.variant);
+  const {kg, skipped} = batchKg(f, dState.variant);
+  const totalMats = matCount(f);
+
+  const rows = combo.map(m=>{
+    const k = toKg(m.amount, m.unit);
+    const pct = (k!=null && kg>0) ? `<span class="pct">${trimNum(k/kg*100)}٪</span>` : `<span class="pct" style="opacity:.45">—</span>`;
+    const cls = m.isBase ? "baserow" : m.variant ? "vrow" : "";
+    const mark = m.isBase ? `<span class="bmark">مبنا</span>` : m.variant ? `<span class="bmark" style="background:linear-gradient(135deg,#38bdf8,#818cf8)">رنگ ${esc(m.variant)}</span>` : "";
+    return `<tr class="${cls}"><td>${esc(m.name)}${mark}</td><td style="font-weight:800">${trimNum(m.amount)}</td><td>${esc(m.unit)}</td><td>${pct}</td></tr>`;
+  }).join("");
+
+  const seg = v.length ? `
+    <div class="seg">
+      <button data-v="" class="${!dState.variant?"on":""}">فقط پایه</button>
+      ${v.map(x=>`<button data-v="${x.id}" class="${dState.variant===x.id?"on":""}">${esc(x.name)}</button>`).join("")}
+    </div>` : "";
+
+  const baseIsWeight = toKg(f.base.amount, f.base.unit)!=null;
+  const unitOpts = baseIsWeight
+    ? ["گرم","کیلوگرم"].map(u=>`<option ${u===f.base.unit?"selected":""}>${u}</option>`).join("")
+    : `<option>${esc(f.base.unit)}</option>`;
+
+  sh.querySelector("#droot").innerHTML = `
+    <div class="d-hero">${imgBlock(f)}
+      <div class="ov">
+        <h2>${esc(f.name)}</h2>
+        <div class="bdgs">
+          <span class="badge">${esc(f.category)}</span>
+          ${f.color?`<span class="badge">رنگ: ${esc(f.color.name)}</span>`:""}
+          ${v.length?`<span class="badge">${trimNum(v.length)} واریانت رنگ</span>`:""}
+        </div>
+      </div>
+    </div>
+    <div class="sheet-pad">
+      ${f.description?`<p class="sub" style="font-size:13px;line-height:2.1">${esc(f.description)}</p>`:""}
+
+      <div class="dmeta">
+        <div class="dtile"><div class="k">وزن مبنا</div><div class="v">${trimNum(f.base.amount)} ${esc(f.base.unit)} <span style="color:var(--ink3);font-size:11px">${esc(f.base.name)}</span></div></div>
+        <div class="dtile"><div class="k">وزن کل بچ</div><div class="v" style="color:var(--accent-a)">${fmtKg(kg)}</div></div>
+        <div class="dtile"><div class="k">تعداد مواد</div><div class="v">${trimNum(totalMats)} مورد</div></div>
+        <div class="dtile"><div class="k">ایجاد</div><div class="v" style="font-size:12.5px">${faDate(f.createdAt)}</div></div>
+        <div class="dtile"><div class="k">آخرین ویرایش</div><div class="v" style="font-size:12.5px">${rel(f.updatedAt)}</div></div>
+        <div class="dtile"><div class="k">استفاده</div><div class="v">${trimNum(f.useCount||0)} بار${f.lastUsedAt?` · ${rel(f.lastUsedAt)}`:""}</div></div>
+      </div>
+
+      ${v.length?`<div class="f-lbl" style="margin-top:4px">واریانت رنگ</div>${seg}`:""}
+
+      <table class="mtable">
+        <thead><tr><th>ماده</th><th>مقدار</th><th>واحد</th><th>درصد</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+
+      <div class="batchbar glass">
+        <div class="sheen"></div>
+        <div><div class="l">وزن کل بچ (${dState.variant?"با رنگ "+esc((v.find(x=>x.id===dState.variant)||{}).name||""):"پایه"})</div><div class="n">${fmtKg(kg)}</div></div>
+        <div style="text-align:left"><div class="l">مبنای فرمول</div><div class="n" style="font-size:15px">${trimNum(f.base.amount)} ${esc(f.base.unit)}</div></div>
+      </div>
+      ${skipped?`<p class="note">⚠ ${trimNum(skipped)} ماده با واحد غیروزنی در جمع وزن لحاظ نشده‌اند — واحد آن‌ها همان‌طور که هست حفظ می‌شود.</p>`:""}
+      <p class="note">وزن مبنا فقط وزن مادهٔ اصلی (${esc(f.base.name)}) است و با وزن کل بچ فرق دارد؛ تغییر مبنا، همهٔ مواد را به همان نسبت تغییر می‌دهد.</p>
+
+      <div class="calcbox glass">
+        <div class="sheen"></div>
+        <h4>${I.calc} محاسبه برای مقدار جدید</h4>
+        <p class="sub">مقدار جدید «${esc(f.base.name)}» را وارد کنید تا همهٔ مواد به نسبت محاسبه شوند.</p>
+        <div class="calc-in">
+          <input class="f-in" id="calcAmt" type="number" step="any" min="0" dir="ltr" value="${f.base.amount}" style="flex:1.4">
+          <select class="f-in" id="calcUnit" style="flex:1">${unitOpts}</select>
+          <button class="btn btn-p" id="calcUse" style="flex:1.3">${I.check} ثبت استفاده</button>
+        </div>
+        <div class="presets">${[1,5,10,15,20].map(n=>`<button data-p="${n}">${trimNum(n)} کیلو</button>`).join("")}</div>
+        <div id="calcRes"></div>
+        <div class="imgbtns">
+          <button class="btn btn-sm" id="dCopyList">${I.copy} کپی لیست مواد (مقادیر جدید)</button>
+        </div>
+      </div>
+
+      <div class="dactions">
+        <button class="btn" id="dEdit">${I.pen} ویرایش</button>
+        <button class="btn" id="dShare">📤 اشتراک</button>
+        <button class="btn" id="dCopy">${I.copy} کپی فرمول</button>
+        ${f.history&&f.history.length?`<button class="btn" id="dHist">${I.hist} بازیابی نسخه قبلی</button>`:""}
+        <button class="btn btn-d" id="dDel">${I.trash} حذف</button>
+      </div>
+    </div>`;
+
+  sh.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{ dState.variant=b.dataset.v||null; mountDetail(sh); });
+  const upd = ()=>{
+    const amt = parseFloat(sh.querySelector("#calcAmt").value);
+    const unit = sh.querySelector("#calcUnit").value;
+    const res = sh.querySelector("#calcRes");
+    if(!(amt>0)){ res.innerHTML=""; return; }
+    const factor = calcFactor(f, amt, unit);
+    const rows2 = combo.map(m=>`<tr><td>${esc(m.name)}</td><td>${trimNum(m.amount)} ${esc(m.unit)}</td><td style="font-weight:800;color:var(--accent-a)">${trimNum(m.amount*factor)} ${esc(m.unit)}</td></tr>`).join("");
+    const baseW = toKg(f.base.amount,f.base.unit);
+    const newKg = baseW!=null ? kg*factor : null;
+    res.innerHTML = `
+      <table class="mtable" style="margin-top:14px">
+        <thead><tr><th>ماده</th><th>مقدار اصلی</th><th>مقدار جدید (×${trimNum(factor)})</th></tr></thead>
+        <tbody>${rows2}</tbody>
+      </table>
+      ${newKg!=null?`<div class="batchbar glass" style="margin-top:12px"><div class="sheen"></div><div><div class="l">وزن کل بچ جدید</div><div class="n">${fmtKg(newKg)}</div></div></div>`:""}`;
+  };
+  sh.querySelector("#calcAmt").addEventListener("input", upd);
+  sh.querySelector("#calcUnit").addEventListener("change", upd);
+  sh.querySelectorAll(".presets button").forEach(b=>b.onclick=()=>{
+    sh.querySelector("#calcAmt").value=b.dataset.p; sh.querySelector("#calcUnit").value="کیلوگرم"; upd();
+  });
+  upd();
+
+  sh.querySelector("#calcUse").onclick = ()=>{ f.useCount=(f.useCount||0)+1; f.lastUsedAt=Date.now(); save(); renderAll(); toast("استفاده ثبت شد ✓"); };
+
+  sh.querySelector("#dCopyList").onclick = async ()=>{
+    const amt = parseFloat(sh.querySelector("#calcAmt").value);
+    const unit = sh.querySelector("#calcUnit").value;
+    const factor = (amt>0) ? calcFactor(f,amt,unit) : 1;
+    const lines = [`🧾 ${f.name}` + (factor!==1?` — برای ${trimNum(amt)} ${unit} ${f.base.name}`:"")]
+      .concat(combo.map(m=>`• ${m.name}: ${trimNum(m.amount*factor)} ${m.unit}`));
+    const bw = toKg(f.base.amount,f.base.unit);
+    if(bw!=null) lines.push(`⚖ وزن کل بچ: ${fmtKg(kg*factor)}`);
+    try{ await navigator.clipboard.writeText(lines.join("\n")); toast("لیست مواد کپی شد ✓"); }
+    catch(e){ toast("مرورگر اجازه کپی نداد","err"); }
+  };
+
+  sh.querySelector("#dShare").onclick = async ()=>{
+    const txt = `🧾 ${f.name} (${f.category})\nمبنا: ${trimNum(f.base.amount)} ${f.base.unit} ${f.base.name}\n` +
+      combo.map(m=>`• ${m.name}: ${trimNum(m.amount)} ${m.unit}`).join("\n") +
+      `\n⚖ وزن کل بچ: ${fmtKg(kg)}`;
+    if(navigator.share){ try{ await navigator.share({title:f.name, text:txt}); return; }catch(e){} }
+    try{ await navigator.clipboard.writeText(txt); toast("متن فرمول کپی شد — می‌توانید در پیام‌رسان بفرستید ✓"); }
+    catch(e){ toast("اشتراک‌گذاری ممکن نشد","err"); }
+  };
+
+  sh.querySelector("#dEdit").onclick = ()=>{ closeTop(); openEditor(f.id); };
+  sh.querySelector("#dCopy").onclick = ()=>{
+    const c = clone(f); c.id=uid(); c.name=f.name+" (کپی)"; c.createdAt=Date.now(); c.updatedAt=Date.now();
+    c.useCount=0; c.lastUsedAt=null; c.history=[];
+    (c.materials||[]).forEach(m=>m.id=uid()); (c.variants||[]).forEach(v=>{v.id=uid();v.materials.forEach(m=>m.id=uid());});
+    DB.formulas.unshift(c); save(); renderAll(); closeTop(); toast("کپی فرمول ساخته شد ✓");
+  };
+  const delBtn = sh.querySelector("#dDel");
+  if(delBtn) delBtn.onclick = async ()=>{
+    const r = await confirmDlg("حذف فرمول", `آیا از حذف «${f.name}» مطمئن هستید؟ این کار قابل بازگشت نیست.`,
+      [{k:"y",label:"حذف کن",cls:"btn-d"},{k:"n",label:"انصراف"}]);
+    if(r==="y"){ DB.formulas = DB.formulas.filter(x=>x.id!==f.id); save(); renderAll(); closeTop(); toast("فرمول حذف شد","err"); }
+  };
+  const hBtn = sh.querySelector("#dHist");
+  if(hBtn) hBtn.onclick = async ()=>{
+    const r = await confirmDlg("بازیابی نسخه قبلی", "نسخه فعلی در تاریخچه نگه داشته می‌شود و نسخه قبلی جایگزین می‌شود.",
+      [{k:"y",label:"بازیابی کن"},{k:"n",label:"انصراف"}]);
+    if(r!=="y") return;
+    const snap = f.history.shift();
+    f.history.unshift({at:Date.now(), data:clone({...f, history:f.history})});
+    const keepHist = f.history;
+    Object.assign(f, snap.data); f.history = keepHist; f.updatedAt = Date.now();
+    save(); renderAll(); mountDetail(sh); toast("نسخه قبلی بازیابی شد ✓");
+  };
+}
+
+/* =========================================================
+   بخش ۷ — ویرایشگر
+========================================================= */
+let draft=null, isNew=false, touched=false, editorSh=null;
+
+function blankFormula(){
+  return { id:uid(), name:"", category:DB.categories[0], color:{hex:"#9aa7b5",name:""},
+    description:"", image:null, base:{name:"",amount:"",unit:"کیلوگرم"},
+    materials:[], variants:[], tags:[], history:[], fav:false, createdAt:Date.now(), updatedAt:Date.now(), useCount:0, lastUsedAt:null };
+}
+
+function openEditor(id){
+  isNew = !id;
+  draft = id ? clone(findF(id)) : blankFormula();
+  touched = false;
+  editorSh = openModal(`<div class="sheet-pad" id="edroot"></div>`, {wide:true});
+  buildEditor();
+}
+
+function unitOptions(sel){ return UNITS.map(u=>`<option ${u===sel?"selected":""}>${u}</option>`).join(""); }
+
+function buildEditor(){
+  const cats = DB.categories.map(c=>`<option ${c===draft.category?"selected":""}>${esc(c)}</option>`).join("");
+  editorSh.querySelector("#edroot").innerHTML = `
+    <h2>${isNew?I.plus:I.pen} ${isNew?"فرمول جدید":"ویرایش فرمول"}</h2>
+    <p class="sub">${isNew?"نام مواد را از کتابخانه انتخاب کنید یا دستی بنویسید.":"تمام بخش‌ها قابل ویرایش هستند."}</p>
+
+    <label class="f-lbl">۱ · نام فرمول *</label>
+    <input class="f-in" id="eName" value="${esc(draft.name)}" placeholder="مثلاً: فرمول بژ">
+
+    <div class="frow">
+      <div><label class="f-lbl">۲ · دسته‌بندی</label>
+        <select class="f-in" id="eCat">${cats}<option value="__new">＋ دسته جدید…</option></select>
+        <input class="f-in" id="eNewCat" placeholder="نام دسته جدید" style="display:none;margin-top:8px">
+      </div>
+      <div><label class="f-lbl">رنگ محصول</label>
+        <div class="colorrow">
+          <input type="color" id="eColorHex" value="${draft.color?.hex||"#9aa7b5"}">
+          <input class="f-in" id="eColorName" value="${esc(draft.color?.name||"")}" placeholder="نام رنگ (مثلاً بژ)">
+        </div>
+      </div>
+    </div>
+
+    <label class="f-lbl">۳ · عکس فرمول / محصول</label>
+    <div class="imgbox" id="imgBox"></div>
+    <div class="imgbtns">
+      <button class="btn btn-sm" id="btnGal">${I.img} گالری / فایل</button>
+      <button class="btn btn-sm" id="btnCam">${I.cam} دوربین</button>
+      <button class="btn btn-sm btn-d" id="btnImgDel" ${draft.image?"":"disabled"}>${I.trash} حذف عکس</button>
+    </div>
+
+    <label class="f-lbl">۴ · وزن مبنا (مادهٔ اصلی) *</label>
+    <p class="note" style="margin:-3px 0 9px">وزن مبنا = وزن مادهٔ اصلی (مثلاً ۱۰ کیلو ژلکوت)، نه مجموع بچ.</p>
+    <div class="frow">
+      <input class="f-in" id="eBName" list="matLibList" value="${esc(draft.base.name)}" placeholder="نام ماده پایه (مثلاً ژلکوت)" style="flex:2">
+      <input class="f-in" id="eBAmt" type="number" step="any" min="0" dir="ltr" value="${draft.base.amount}" placeholder="مقدار">
+      <select class="f-in" id="eBUnit">${unitOptions(draft.base.unit)}</select>
+    </div>
+
+    <div class="edsec">
+      <h4>⚖ مواد اولیه (غیر از ماده پایه)
+        <span class="sp"></span>
+        <button class="btn btn-sm" id="edMats" type="button">🧪 مدیریت مواد</button>
+      </h4>
+      <div id="matList" style="margin-top:12px"></div>
+      <button class="btn btn-sm addline" id="addMat">${I.plus} افزودن ماده</button>
+    </div>
+
+    <div class="edsec">
+      <h4>${I.drop} واریانت‌های رنگ (اختیاری)</h4>
+      <p class="note" style="margin-top:4px">برای فرمول‌هایی که یک پایه و چند رنگ دارند (مثل سفید/مشکی).</p>
+      <div id="varList" style="margin-top:12px"></div>
+      <button class="btn btn-sm addline" id="addVar">${I.plus} افزودن واریانت</button>
+    </div>
+
+    <div class="edsec">
+      <h4>توضیحات</h4>
+      <textarea class="f-in" id="eDesc" placeholder="نکات تولید، ترتیب اختلاط، هشدارها…">${esc(draft.description)}</textarea>
+    </div>
+
+    <div class="dactions" style="position:sticky;bottom:0;padding-top:16px">
+      <button class="btn btn-p" id="eSave" style="flex:2">${I.check} ذخیره فرمول</button>
+      <button class="btn" data-close style="flex:1">انصراف</button>
+    </div>`;
+
+  renderMatList(); renderVarList(); renderImgBox();
+  wireEditor();
+}
+
+function renderImgBox(){
+  const box = editorSh.querySelector("#imgBox");
+  box.innerHTML = draft.image
+    ? `<img src="${draft.image}" alt="">`
+    : `<div class="hint">${I.img}<span>برای انتخاب عکس لمس کنید<br>(گالری، فایل یا دوربین)</span></div>`;
+  editorSh.querySelector("#btnImgDel").disabled = !draft.image;
+}
+
+function matRowHTML(m,i,len){
+  return `<div class="mrow" data-i="${i}">
+    <input class="f-in mi-name" list="matLibList" value="${esc(m.name)}" placeholder="نام ماده (از کتابخانه)">
+    <input class="f-in mi-amt" type="number" step="any" dir="ltr" value="${m.amount===""?"":m.amount}" placeholder="مقدار">
+    <select class="f-in mi-unit">${unitOptions(m.unit)}</select>
+    <div class="mrow-btns">
+      <button class="ibtn" data-act="up" ${i===0?"disabled":""}>${I.up}</button>
+      <button class="ibtn" data-act="dn" ${i===len-1?"disabled":""}>${I.dn}</button>
+      <button class="ibtn danger" data-act="del">${I.x}</button>
+    </div>
+  </div>`;
+}
+function renderMatList(){
+  editorSh.querySelector("#matList").innerHTML =
+    draft.materials.length ? draft.materials.map((m,i)=>matRowHTML(m,i,draft.materials.length)).join("")
+    : `<p class="note">هنوز ماده‌ای اضافه نشده است.</p>`;
+}
+function renderVarList(){
+  const el = editorSh.querySelector("#varList");
+  if(!draft.variants.length){ el.innerHTML = `<p class="note">واریانتی تعریف نشده است.</p>`; return; }
+  el.innerHTML = draft.variants.map((v,vi)=>`
+    <div class="variant-card" data-vi="${vi}">
+      <div class="vh">
+        <input class="f-in v-name" value="${esc(v.name)}" placeholder="نام واریانت (مثلاً سفید)">
+        <button class="ibtn danger v-del">${I.trash}</button>
+      </div>
+      <div class="v-mats">
+        ${v.materials.map((m,i)=>`
+          <div class="mrow" data-i="${i}">
+            <input class="f-in mi-name" list="matLibList" value="${esc(m.name)}" placeholder="نام ماده">
+            <input class="f-in mi-amt" type="number" step="any" dir="ltr" value="${m.amount===""?"":m.amount}" placeholder="مقدار">
+            <select class="f-in mi-unit">${unitOptions(m.unit)}</select>
+            <div class="mrow-btns"><button class="ibtn danger" data-act="del">${I.x}</button></div>
+          </div>`).join("")}
+      </div>
+      <button class="btn btn-sm v-add">${I.plus} ماده برای این واریانت</button>
+    </div>`).join("");
+}
+
+function wireEditor(){
+  const sh = editorSh;
+  const T = sel => sh.querySelector(sel);
+  const mark = ()=>{ touched=true; };
+
+  T("#edMats").onclick = ()=>openMats();
+
+  T("#eName").addEventListener("input", e=>{ draft.name=e.target.value; mark(); });
+  T("#eCat").addEventListener("change", e=>{
+    if(e.target.value==="__new"){ T("#eNewCat").style.display="block"; T("#eNewCat").focus(); }
+    else { T("#eNewCat").style.display="none"; draft.category=e.target.value; mark(); }
+  });
+  T("#eNewCat").addEventListener("input", e=>{ draft.category=e.target.value; mark(); });
+  T("#eColorHex").addEventListener("input", e=>{ draft.color=draft.color||{}; draft.color.hex=e.target.value; mark(); });
+  T("#eColorName").addEventListener("input", e=>{ draft.color=draft.color||{}; draft.color.name=e.target.value; mark(); });
+  T("#eBName").addEventListener("input", e=>{
+    draft.base.name=e.target.value;
+    const u=libUnit(e.target.value);
+    if(u){ draft.base.unit=u; T("#eBUnit").value=u; }
+    mark();
+  });
+  T("#eBAmt").addEventListener("input", e=>{ draft.base.amount=e.target.value===""?"":parseFloat(e.target.value); mark(); });
+  T("#eBUnit").addEventListener("change", e=>{ draft.base.unit=e.target.value; mark(); });
+  T("#eDesc").addEventListener("input", e=>{ draft.description=e.target.value; mark(); });
+
+  T("#addMat").onclick = ()=>{ draft.materials.push({id:uid(),name:"",amount:"",unit:"گرم"}); renderMatList(); mark(); };
+  T("#matList").addEventListener("input", e=>{
+    const row = e.target.closest(".mrow"); if(!row) return;
+    const m = draft.materials[+row.dataset.i];
+    if(e.target.classList.contains("mi-name")){
+      m.name=e.target.value;
+      const u=libUnit(e.target.value);
+      if(u){ m.unit=u; row.querySelector(".mi-unit").value=u; }
+    }
+    if(e.target.classList.contains("mi-amt")) m.amount=e.target.value===""?"":parseFloat(e.target.value);
+    if(e.target.classList.contains("mi-unit")) m.unit=e.target.value;
+    mark();
+  });
+  T("#matList").addEventListener("click", e=>{
+    const b=e.target.closest("[data-act]"); if(!b) return;
+    const i=+b.closest(".mrow").dataset.i, act=b.dataset.act, arr=draft.materials;
+    if(act==="del") arr.splice(i,1);
+    if(act==="up"&&i>0)[arr[i-1],arr[i]]=[arr[i],arr[i-1]];
+    if(act==="dn"&&i<arr.length-1)[arr[i+1],arr[i]]=[arr[i],arr[i+1]];
+    renderMatList(); mark();
+  });
+
+  T("#addVar").onclick = ()=>{ draft.variants.push({id:uid(),name:"",materials:[]}); renderVarList(); mark(); };
+  T("#varList").addEventListener("click", e=>{
+    const card = e.target.closest(".variant-card"); if(!card) return;
+    const vi = +card.dataset.vi;
+    if(e.target.closest(".v-del")){ draft.variants.splice(vi,1); renderVarList(); mark(); return; }
+    if(e.target.closest(".v-add")){ draft.variants[vi].materials.push({id:uid(),name:"",amount:"",unit:"گرم"}); renderVarList(); mark(); return; }
+    const b=e.target.closest("[data-act]");
+    if(b&&b.dataset.act==="del"){ draft.variants[vi].materials.splice(+b.closest(".mrow").dataset.i,1); renderVarList(); mark(); }
+  });
+  T("#varList").addEventListener("input", e=>{
+    const card = e.target.closest(".variant-card"); if(!card) return;
+    const v = draft.variants[+card.dataset.vi];
+    if(e.target.classList.contains("v-name")) v.name=e.target.value;
+    const row=e.target.closest(".mrow");
+    if(row){ const m=v.materials[+row.dataset.i];
+      if(e.target.classList.contains("mi-name")){
+        m.name=e.target.value;
+        const u=libUnit(e.target.value);
+        if(u){ m.unit=u; row.querySelector(".mi-unit").value=u; }
+      }
+      if(e.target.classList.contains("mi-amt")) m.amount=e.target.value===""?"":parseFloat(e.target.value);
+      if(e.target.classList.contains("mi-unit")) m.unit=e.target.value; }
+    mark();
+  });
+
+  T("#imgBox").onclick = ()=>$("#fileGal").click();
+  T("#btnGal").onclick = ()=>$("#fileGal").click();
+  T("#btnCam").onclick = ()=>$("#fileCam").click();
+  T("#btnImgDel").onclick = ()=>{ draft.image=null; renderImgBox(); mark(); };
+
+  T("#eSave").onclick = ()=>{
+    const newCat = T("#eNewCat").value.trim();
+    if(newCat && !DB.categories.includes(newCat)) DB.categories.push(newCat);
+    if(!draft.name.trim()) return toast("نام فرمول را وارد کنید","err");
+    if(!draft.base.name.trim()) return toast("نام ماده پایه (وزن مبنا) را وارد کنید","err");
+    if(!(draft.base.amount>0)) return toast("مقدار وزن مبنا را وارد کنید","err");
+
+    draft.materials = draft.materials.filter(m=>m.name.trim() && m.amount!=="");
+    draft.variants  = draft.variants.filter(v=>v.name.trim())
+      .map(v=>({...v, materials:v.materials.filter(m=>m.name.trim() && m.amount!=="")}));
+    draft.color = {hex:draft.color?.hex||"#9aa7b5", name:draft.color?.name||""};
+    draft.updatedAt = Date.now();
+
+    if(isNew){ DB.formulas.unshift(draft); }
+    else{
+      const idx = DB.formulas.findIndex(f=>f.id===draft.id);
+      const prev = clone(DB.formulas[idx]);
+      draft.history = draft.history||[];
+      draft.history.unshift({at:Date.now(), data:prev});
+      draft.history = draft.history.slice(0,5);
+      DB.formulas[idx] = draft;
+    }
+    save(); renderAll(); touched=false; closeTop();
+    toast(isNew?"فرمول جدید ذخیره شد ✓":"تغییرات ذخیره شد ✓");
+  };
+
+  sh.querySelector("[data-close]").addEventListener("click", async e=>{
+    if(touched){
+      e.stopPropagation();
+      const r = await confirmDlg("خروج بدون ذخیره","تغییرات ذخیره نشده از بین می‌رود.",[{k:"y",label:"خارج شو",cls:"btn-d"},{k:"n",label:"ادامه ویرایش"}]);
+      if(r==="y"){ touched=false; closeTop(); }
+    }
+  }, true);
+}
+
+/* =========================================================
+   بخش ۸ — کتابخانه مواد
+========================================================= */
+function openMats(){
+  const sh = openModal(`
+    <div class="sheet-pad" style="max-width:480px;margin:0 auto">
+      <h2>🧪 مدیریت مواد اولیه</h2>
+      <p class="sub">موادتان را تعریف کنید (مثل ژلکوت، رزین، سیلیس…). هنگام ساخت فرمول، با تایپِ نام، پیشنهاد می‌آیند و واحد پیش‌فرضشان خودکار انتخاب می‌شود.</p>
+      <div class="frow" style="margin-top:16px">
+        <input class="f-in" id="mName" placeholder="نام ماده جدید (مثلاً سیلیس)">
+        <select class="f-in" id="mUnit">${unitOptions("گرم")}</select>
+        <button class="btn btn-p" id="mAdd" style="flex:0 0 auto;padding:0 16px">${I.plus}</button>
+      </div>
+      <div id="mList" style="margin-top:16px"></div>
+      <div class="dactions"><button class="btn btn-p" data-close style="flex:2">${I.check} تمام</button></div>
+    </div>`);
+  const render = ()=>{
+    sh.querySelector("#mList").innerHTML = DB.materials.length ?
+      DB.materials.map((m,i)=>`
+        <div class="mrow" data-i="${i}">
+          <input class="f-in mi-name" value="${esc(m.name)}">
+          <select class="f-in mi-unit">${unitOptions(m.unit)}</select>
+          <div class="mrow-btns"><button class="ibtn danger" data-act="del">${I.x}</button></div>
+        </div>`).join("")
+      : `<p class="note">ماده‌ای تعریف نشده است.</p>`;
+  };
+  render();
+  sh.querySelector("#mAdd").onclick = ()=>{
+    const n = sh.querySelector("#mName").value.trim();
+    if(!n) return toast("نام ماده را بنویسید","err");
+    if(DB.materials.some(m=>norm(m.name)===norm(n))) return toast("این ماده قبلاً ثبت شده","err");
+    DB.materials.push({id:uid(), name:n, unit:sh.querySelector("#mUnit").value});
+    save(); renderMatLib(); render();
+    sh.querySelector("#mName").value="";
+    toast("ماده اضافه شد ✓");
+  };
+  sh.querySelector("#mList").addEventListener("input", e=>{
+    const row=e.target.closest(".mrow"); if(!row) return;
+    const m=DB.materials[+row.dataset.i];
+    if(e.target.classList.contains("mi-name")) m.name=e.target.value;
+    if(e.target.classList.contains("mi-unit")) m.unit=e.target.value;
+    save(); renderMatLib();
+  });
+  sh.querySelector("#mList").addEventListener("click", e=>{
+    const b=e.target.closest("[data-act=del]"); if(!b) return;
+    DB.materials.splice(+b.closest(".mrow").dataset.i,1);
+    save(); renderMatLib(); render();
+    toast("ماده حذف شد","err");
+  });
+}
+
+/* =========================================================
+   بخش ۹ — کراپ عکس
+========================================================= */
+function handleImageFile(file){
+  if(!file || !file.type.startsWith("image/")) return;
+  const rd = new FileReader();
+  rd.onload = ()=>openCrop(rd.result, result=>{ draft.image=result; renderImgBox(); touched=true; toast("عکس تنظیم شد ✓"); });
+  rd.readAsDataURL(file);
+}
+$("#fileGal").addEventListener("change", e=>{ handleImageFile(e.target.files[0]); e.target.value=""; });
+$("#fileCam").addEventListener("change", e=>{ handleImageFile(e.target.files[0]); e.target.value=""; });
+
+function openCrop(src, done){
+  const sh = openModal(`
+    <div class="cropwrap">
+      <h2>${I.img} تنظیم عکس</h2>
+      <p class="sub">با کشیدن انگشت/موس جابه‌جا کنید و با لغرنده بزرگ‌نمایی کنید.</p>
+      <canvas id="cropCv" style="margin-top:14px"></canvas>
+      <div class="zoomrow"><span style="font-size:12px;color:var(--ink2);font-weight:700;flex:0 0 auto">بزرگ‌نمایی</span><input type="range" id="cropZoom" min="1" max="3" step="0.01" value="1"></div>
+      <div class="dactions"><button class="btn btn-p" id="cropOk" style="flex:2">${I.check} تأیید عکس</button><button class="btn" data-close>انصراف</button></div>
+    </div>`);
+  const cv = sh.querySelector("#cropCv"), ctx = cv.getContext("2d");
+  const CW=960, CH=720; cv.width=CW; cv.height=CH;
+  const img = new Image();
+  let zoom=1, ox=0, oy=0;
+  const baseS = ()=>Math.max(CW/img.width, CH/img.height);
+  const clamp = ()=>{
+    const w=img.width*baseS()*zoom, h=img.height*baseS()*zoom;
+    ox=Math.min(0,Math.max(CW-w,ox)); oy=Math.min(0,Math.max(CH-h,oy));
+  };
+  const draw = ()=>{
+    ctx.clearRect(0,0,CW,CH);
+    const s=baseS()*zoom;
+    ctx.drawImage(img, ox, oy, img.width*s, img.height*s);
+  };
+  img.onload = ()=>{ const w=img.width*baseS(); ox=(CW-w)/2; oy=(CH-img.height*baseS())/2; clamp(); draw(); };
+  img.src = src;
+  sh.querySelector("#cropZoom").addEventListener("input", e=>{
+    const z=parseFloat(e.target.value), cx=CW/2-ox, cy=CH/2-oy, r=z/zoom;
+    ox=CW/2-cx*r; oy=CH/2-cy*r; zoom=z; clamp(); draw();
+  });
+  let drag=null;
+  cv.addEventListener("pointerdown", e=>{ drag={x:e.clientX,y:e.clientY,ox,oy}; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener("pointermove", e=>{
+    if(!drag) return;
+    const rect=cv.getBoundingClientRect(), k=CW/rect.width;
+    ox=drag.ox+(e.clientX-drag.x)*k; oy=drag.oy+(e.clientY-drag.y)*k; clamp(); draw();
+  });
+  cv.addEventListener("pointerup", ()=>drag=null);
+  sh.querySelector("#cropOk").onclick = ()=>{ const out=cv.toDataURL("image/jpeg",.85); closeTop(); done(out); };
+}
+
+/* =========================================================
+   بخش ۱۰ — پشتیبان، تم، PWA
+========================================================= */
+$("#miExport").onclick = ()=>{
+  const blob = new Blob([JSON.stringify(exportData(),null,1)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "data.json";
+  a.click(); URL.revokeObjectURL(a.href);
+  toast("فایل data.json دانلود شد ✓");
+};
+$("#fileImp").addEventListener("change", async e=>{
+  const file=e.target.files[0]; e.target.value=""; if(!file) return;
+  try{
+    const data = JSON.parse(await file.text());
+    const list = Array.isArray(data)?data:(Array.isArray(data.formulas)?data.formulas:null);
+    if(!list) throw 0;
+    const cats = Array.isArray(data.categories)?data.categories:[];
+    const mats = Array.isArray(data.materials)?data.materials:[];
+    const r = await confirmDlg("بازیابی پشتیبان",
+      `${list.length} فرمول در فایل پیدا شد. «جایگزین» همه داده‌های فعلی را پاک می‌کند؛ «ادغام» اضافه و به‌روز می‌کند.`,
+      [{k:"rep",label:"جایگزین کامل",cls:"btn-d"},{k:"merge",label:"ادغام"},{k:"no",label:"انصراف"}]);
+    if(r==="no") return;
+    if(r==="rep"){ DB.formulas=list; if(mats.length) DB.materials=mats; }
+    else{
+      list.forEach(f=>{
+        const i=DB.formulas.findIndex(x=>x.id===f.id);
+        if(i>=0) DB.formulas[i]=f; else DB.formulas.push(f);
+      });
+      mats.forEach(m=>{ if(!DB.materials.some(x=>x.id===m.id)) DB.materials.push(m); });
+    }
+    DB.categories=[...new Set([...DB.categories,...cats])];
+    save(); renderAll(); toast("بازیابی با موفقیت انجام شد ✓");
+  }catch(err){ toast("فایل انتخابی معتبر نیست","err"); }
+});
+$("#miImport").onclick = ()=>$("#fileImp").click();
+$("#miReset").onclick = async ()=>{
+  const r = await confirmDlg("پاک‌کردن همه فرمول‌ها", "همه فرمول‌ها حذف می‌شوند و کتابخانه مواد به حالت شروع برمی‌گردد.",
+    [{k:"y",label:"پاک کن",cls:"btn-d"},{k:"n",label:"انصراف"}]);
+  if(r==="y"){ DB={formulas:[],categories:[...BASE_CAT],materials:starterMaterials()}; save(); renderAll(); toast("همه فرمول‌ها پاک شد"); }
+};
+
+const themeBtn=$("#themeBtn");
+function applyTheme(){
+  const pal = (SET.ink && SET.ink!=="auto") ? SET.ink : SET.theme;
+  document.documentElement.dataset.theme = SET.theme;
+  document.documentElement.dataset.pal = pal;
+  themeBtn.innerHTML = SET.theme==="dark"?I.sun:I.moon;
+  const tc=document.querySelector('meta[name="theme-color"]');
+  if(tc) tc.content = pal==="dark"?"#070b10":"#e8edf4";
+}
+themeBtn.onclick=()=>{ SET.theme=SET.theme==="dark"?"light":"dark"; Store.saveSet(SET); applyTheme(); };
+
+const menuPop=$("#menuPop");
+$("#menuBtn").onclick=e=>{ e.stopPropagation(); menuPop.classList.toggle("on"); };
+document.addEventListener("click",e=>{ if(!e.target.closest(".topacts")) menuPop.classList.remove("on"); });
+menuPop.addEventListener("click",()=>menuPop.classList.remove("on"));
+
+$("#q").addEventListener("input", e=>{ ui.q=e.target.value; renderGrid(); });
+$("#fab").onclick = ()=>openEditor(null);
+$("#miMats").onclick = ()=>openMats();
+grid.addEventListener("click", async e=>{
+  const card=e.target.closest(".card"); if(!card) return;
+  const id=card.dataset.id, act=e.target.closest("[data-act]")?.dataset.act;
+  if(act==="fav"){
+    const f=findF(id); f.fav=!f.fav; save();
+    e.target.closest(".favbtn").classList.toggle("on",f.fav);
+    if(ui.filter==="⭐ علاقه‌مندی‌ها") renderGrid();
+    return;
+  }
+  if(act==="edit") return openEditor(id);
+  if(act==="del"){
+    const f=findF(id);
+    const r=await confirmDlg("حذف فرمول",`آیا از حذف «${f.name}» مطمئن هستید؟`,[{k:"y",label:"حذف کن",cls:"btn-d"},{k:"n",label:"انصراف"}]);
+    if(r==="y"){ DB.formulas=DB.formulas.filter(x=>x.id!==id); save(); renderAll(); toast("فرمول حذف شد","err"); }
+    return;
+  }
+  openDetail(id);
+});
+
+let deferredPrompt=null;
+window.addEventListener("beforeinstallprompt", e=>{ e.preventDefault(); deferredPrompt=e; $("#miInstall").style.display="flex"; });
+$("#miInstall").onclick=async ()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; $("#miInstall").style.display="none"; };
+(function pwa(){
+  try{
+    const icon="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#38bdf8"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="#0b1220"/><path d="M32 10s15 16 15 27a15 15 0 0 1-30 0c0-11 15-27 15-27Z" fill="url(#g)"/></svg>');
+    const manifest={name:"فرمول‌یار — مدیریت فرمول‌های سینک گرانیتی",short_name:"فرمول‌یار",start_url:".",scope:".",display:"standalone",dir:"rtl",lang:"fa",background_color:"#070b10",theme_color:"#070b10",icons:[{src:icon,sizes:"any",type:"image/svg+xml",purpose:"any"}]};
+    const l=document.createElement("link"); l.rel="manifest";
+    l.href=URL.createObjectURL(new Blob([JSON.stringify(manifest)],{type:"application/json"}));
+    document.head.appendChild(l);
+  }catch(e){}
+})();
+
+/* =========================================================
+   بخش ۱۱ — پس‌زمینه و رنگ متن
+========================================================= */
+function applyBg(){
+  const el = $("#bgimg");
+  if(SET.bg){
+    el.style.backgroundImage = `url(${SET.bg})`;
+    el.style.opacity = (SET.bgOpacity ?? .35);
+    el.style.filter  = `brightness(${(SET.bgBright ?? 100)/100}) blur(${SET.bgBlur ?? 0}px)`;
+  }else{
+    el.style.backgroundImage = "none"; el.style.opacity = 0;
+  }
+}
+function downscaleImg(dataURL, maxW, q){
+  return new Promise(res=>{
+    const im = new Image();
+    im.onload = ()=>{
+      const k = Math.min(1, maxW/im.width);
+      const c = document.createElement("canvas");
+      c.width = Math.round(im.width*k); c.height = Math.round(im.height*k);
+      c.getContext("2d").drawImage(im,0,0,c.width,c.height);
+      res(c.toDataURL("image/jpeg",q));
+    };
+    im.src = dataURL;
+  });
+}
+$("#fileBg").addEventListener("change", e=>{
+  const f=e.target.files[0]; e.target.value=""; if(!f||!f.type.startsWith("image/")) return;
+  const rd=new FileReader();
+  rd.onload = async ()=>{
+    SET.bg = await downscaleImg(rd.result, 1280, .72);
+    Store.saveSet(SET); applyBg();
+    const prev=document.querySelector("#bgPrev");
+    if(prev){ prev.style.backgroundImage=`url(${SET.bg})`; prev.textContent=""; }
+    toast("پس‌زمینه تنظیم شد ✓");
+  };
+  rd.readAsDataURL(f);
+});
+function openBgSettings(){
+  const inkVal = SET.ink || "auto";
+  const sh = openModal(`
+    <div class="sheet-pad" style="max-width:470px;margin:0 auto">
+      <h2>${I.img} پس‌زمینه و نمایش</h2>
+      <p class="sub">عکس دلخواه از گالری + تنظیم نور و رنگ متن، با پیش‌نمایش زنده.</p>
+      <div id="bgPrev" style="height:150px;border-radius:18px;margin-top:14px;background-size:cover;background-position:center;border:1px solid var(--g-brd);display:grid;place-items:center;color:var(--ink3);font-size:12px;font-weight:700"></div>
+      <div class="imgbtns">
+        <button class="btn" id="bgPick">${I.img} انتخاب از گالری</button>
+        <button class="btn btn-d" id="bgDel">${I.trash} حذف پس‌زمینه</button>
+      </div>
+      <label class="f-lbl">روشنایی / تاریکی — <span id="vBr"></span></label>
+      <input type="range" id="bgBright" min="20" max="180" value="${SET.bgBright??100}">
+      <label class="f-lbl">شفافیت (Opacity) — <span id="vOp"></span></label>
+      <input type="range" id="bgOpacity" min="5" max="100" value="${Math.round((SET.bgOpacity??.35)*100)}">
+      <label class="f-lbl">بلور (Blur) — <span id="vBl"></span></label>
+      <input type="range" id="bgBlur" min="0" max="20" value="${SET.bgBlur??0}">
+
+      <label class="f-lbl">رنگ متن و شیشه‌ها</label>
+      <p class="note" style="margin:-4px 0 6px">اگر پس‌زمینهٔ روشن/سفید گذاشتی و متن خوانا نیست، «متن تیره» را انتخاب کن.</p>
+      <div class="seg" id="inkSeg" style="margin-top:0">
+        <button data-ink="auto"  class="${inkVal==="auto"?"on":""}">خودکار</button>
+        <button data-ink="light" class="${inkVal==="light"?"on":""}">متن روشن</button>
+        <button data-ink="dark"  class="${inkVal==="dark"?"on":""}">متن تیره</button>
+      </div>
+
+      <div class="dactions"><button class="btn btn-p" data-close style="flex:2">${I.check} تأیید و بستن</button></div>
+    </div>`);
+  const prev = sh.querySelector("#bgPrev");
+  const paintPrev = ()=>{
+    if(SET.bg){ prev.style.backgroundImage=`url(${SET.bg})`; prev.textContent=""; }
+    else { prev.style.backgroundImage="none"; prev.textContent="هنوز عکسی انتخاب نشده"; }
+  };
+  paintPrev();
+  const upd = ()=>{
+    SET.bgBright = +sh.querySelector("#bgBright").value;
+    SET.bgOpacity = +sh.querySelector("#bgOpacity").value/100;
+    SET.bgBlur = +sh.querySelector("#bgBlur").value;
+    sh.querySelector("#vBr").textContent = trimNum(SET.bgBright)+"٪";
+    sh.querySelector("#vOp").textContent = trimNum(Math.round(SET.bgOpacity*100))+"٪";
+    sh.querySelector("#vBl").textContent = trimNum(SET.bgBlur)+"px";
+    Store.saveSet(SET); applyBg();
+  };
+  ["#bgBright","#bgOpacity","#bgBlur"].forEach(s=>sh.querySelector(s).addEventListener("input",upd));
+  sh.querySelector("#bgPick").onclick = ()=>$("#fileBg").click();
+  sh.querySelector("#bgDel").onclick = ()=>{ delete SET.bg; Store.saveSet(SET); applyBg(); paintPrev(); toast("پس‌زمینه حذف شد"); };
+  sh.querySelectorAll("#inkSeg button").forEach(b=>b.onclick=()=>{
+    SET.ink = b.dataset.ink; Store.saveSet(SET); applyTheme();
+    sh.querySelectorAll("#inkSeg button").forEach(x=>x.classList.toggle("on", x===b));
+  });
+  upd();
+}
+$("#miBg").onclick = ()=>openBgSettings();
+
+/* =========================================================
+   بخش ۱۲ — همگام‌سازی گیت‌هاب (data.json)
+========================================================= */
+function b64encode(str){
+  const bytes = new TextEncoder().encode(str);
+  let bin=""; bytes.forEach(b=>bin+=String.fromCharCode(b));
+  return btoa(bin);
+}
+const ghOK = () => SET.gh && SET.gh.owner && SET.gh.repo;
+function ghHeaders(){ return { "Authorization":"Bearer "+(SET.gh.token||""), "Accept":"application/vnd.github+json" }; }
+
+async function ghPull(){
+  const {owner,repo,branch} = SET.gh;
+  const r = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/${branch||"main"}/data.json?ts=${Date.now()}`);
+  if(!r.ok) throw new Error("pull "+r.status);
+  return await r.json();
+}
+async function ghPush(){
+  const {owner,repo,branch} = SET.gh;
+  const br = branch||"main";
+  const b64 = b64encode(JSON.stringify(exportData(),null,1));
+  let sha;
+  const meta = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/data.json?ref=${br}`,{headers:ghHeaders()});
+  if(meta.ok){ const j = await meta.json(); sha = j.sha; }
+  const put = async ()=> fetch(`https://api.github.com/repos/${owner}/${repo}/contents/data.json`,{
+    method:"PUT",
+    headers:{...ghHeaders(),"Content-Type":"application/json"},
+    body: JSON.stringify({message:"فرمول‌یار: به‌روزرسانی data.json", content:b64, branch:br, ...(sha?{sha}:{})})
+  });
+  let r = await put();
+  if(r.status===409){ // sha قدیمی → دوباره بگیر و تلاش کن
+    const m2 = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/data.json?ref=${br}`,{headers:ghHeaders()});
+    if(m2.ok){ sha = (await m2.json()).sha; r = await put(); }
+  }
+  if(!r.ok) throw new Error("push "+r.status);
+  return await r.json();
+}
+
+let pushTimer=null, pushing=false;
+function queuePush(){
+  if(!ghOK() || !SET.gh.token) return;
+  clearTimeout(pushTimer);
+  pushTimer = setTimeout(async ()=>{
+    if(pushing){ queuePush(); return; }
+    pushing = true;
+    try{ await ghPush(); toast("در گیت‌هاب ذخیره شد ☁️✓"); }
+    catch(e){ toast("خطا در ذخیره روی گیت‌هاب","err"); }
+    pushing = false;
+  }, 1500);
+}
+
+async function bootPull(){
+  if(!ghOK()) return;
+  try{
+    const data = await ghPull();
+    if(data && Array.isArray(data.formulas)){
+      DB.formulas = data.formulas;
+      if(Array.isArray(data.categories)) DB.categories=[...new Set([...BASE_CAT,...data.categories])];
+      if(Array.isArray(data.materials))  DB.materials=data.materials;
+      Store.save(DB); renderAll();
+    }
+  }catch(e){ /* آفلاین یا فایل نیست */ }
+}
+
+function openGhSettings(){
+  const g = SET.gh||{};
+  const sh = openModal(`
+    <div class="sheet-pad" style="max-width:480px;margin:0 auto">
+      <h2>☁️ همگام‌سازی گیت‌هاب</h2>
+      <p class="sub">فرمول‌ها داخل data.json ریپازیتوری ذخیره و همان‌جا بروز می‌شوند. هر تغییری = آپلود خودکار؛ هر بار باز کردن برنامه = دانلود آخرین نسخه.</p>
+      <label class="f-lbl">نام کاربری گیت‌هاب (Owner)</label>
+      <input class="f-in ltr" id="ghOwner" value="${esc(g.owner||"")}" placeholder="username" autocapitalize="off">
+      <label class="f-lbl">نام ریپازیتوری (Repo)</label>
+      <input class="f-in ltr" id="ghRepo" value="${esc(g.repo||"")}" placeholder="sink-formulas" autocapitalize="off">
+      <label class="f-lbl">شاخه (Branch)</label>
+      <input class="f-in ltr" id="ghBranch" value="${esc(g.branch||"main")}" placeholder="main" autocapitalize="off">
+      <label class="f-lbl">توکن دسترسی (Token)</label>
+      <input class="f-in ltr" id="ghToken" type="password" value="${esc(g.token||"")}" placeholder="github_pat_..." autocomplete="off">
+      <p class="note">توکن فقط در حافظهٔ همین دستگاه ذخیره می‌شود، نه داخل فایل یا ریپو. ساخت توکن: گیت‌هاب → Settings → Developer settings → Personal access tokens → Fine-grained tokens → فقط همین ریپو را انتخاب کن و دسترسی <b>Contents: Read and write</b> بده.</p>
+      <div class="dactions">
+        <button class="btn btn-p" id="ghSave">${I.check} ذخیره تنظیمات</button>
+        <button class="btn" id="ghPullBtn">⬇ دانلود از گیت‌هاب</button>
+        <button class="btn" id="ghPushBtn">⬆ آپلود به گیت‌هاب</button>
+      </div>
+      <div class="ghstat" id="ghStat"></div>
+    </div>`);
+  const stat = m => sh.querySelector("#ghStat").textContent = m;
+  sh.querySelector("#ghSave").onclick = ()=>{
+    SET.gh = {
+      owner: sh.querySelector("#ghOwner").value.trim(),
+      repo:  sh.querySelector("#ghRepo").value.trim(),
+      branch:sh.querySelector("#ghBranch").value.trim()||"main",
+      token: sh.querySelector("#ghToken").value.trim()
+    };
+    Store.saveSet(SET);
+    toast("تنظیمات گیت‌هاب ذخیره شد ✓");
+  };
+  sh.querySelector("#ghPullBtn").onclick = async ()=>{
+    stat("در حال دانلود…");
+    try{
+      const d = await ghPull();
+      if(d && Array.isArray(d.formulas)){
+        DB.formulas=d.formulas;
+        if(Array.isArray(d.categories)) DB.categories=[...new Set([...BASE_CAT,...d.categories])];
+        if(Array.isArray(d.materials))  DB.materials=d.materials;
+        Store.save(DB); renderAll();
+        stat("دانلود شد: "+trimNum(DB.formulas.length)+" فرمول ✓");
+        toast("از گیت‌هاب دانلود شد ✓");
+      } else stat("فایل معتبر نیست");
+    }catch(e){ stat("خطا در دانلود — تنظیمات/اینترنت را بررسی کن"); toast("دانلود ناموفق","err"); }
+  };
+  sh.querySelector("#ghPushBtn").onclick = async ()=>{
+    if(!SET.gh?.token) return stat("برای آپلود، توکن لازم است");
+    stat("در حال آپلود…");
+    try{ await ghPush(); stat("آپلود شد ✓ — data.json در ریپو بروز است"); toast("در گیت‌هاب ذخیره شد ☁️✓"); }
+    catch(e){ stat("خطا در آپلود — توکن/تنظیمات را بررسی کن"); toast("آپلود ناموفق","err"); }
+  };
+}
+$("#miGh").onclick = ()=>openGhSettings();
+
+/* اجرا */
+applyTheme();
+applyBg();
+renderAll();
+bootPull();
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "app": "granite-sink-formulas",
+  "version": 2,
+  "updatedAt": "2026-08-15T00:00:00.000Z",
+  "categories": ["ژلکوت", "رزین", "مخلوط ونیل"],
+  "materials": [
+    {"id":"mat-gelcoat","name":"ژلکوت","unit":"کیلوگرم"},
+    {"id":"mat-resin","name":"رزین","unit":"کیلوگرم"},
+    {"id":"mat-silica","name":"سیلیس","unit":"کیلوگرم"},
+    {"id":"mat-vinylmix","name":"مخلوط ونیل","unit":"کیلوگرم"},
+    {"id":"mat-styrene","name":"ونیل استیر","unit":"کیلوگرم"},
+    {"id":"mat-tio2","name":"تیتانیوم اکسید","unit":"کیلوگرم"},
+    {"id":"mat-erosil","name":"اروزیل","unit":"گرم"},
+    {"id":"mat-cobalt","name":"کبالت","unit":"گرم"},
+    {"id":"mat-blackpaste","name":"خمیر رنگ مشکی","unit":"گرم"}
+  ],
+  "formulas": []
+}

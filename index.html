@@ -71,7 +71,7 @@ html[data-pal="light"] .orb{mix-blend-mode:multiply;filter:blur(110px)}
 #bg .caustic{position:absolute;inset:-30%;background:conic-gradient(from 0deg,transparent 0 12%,rgba(255,255,255,.045) 16%,transparent 22% 45%,rgba(255,255,255,.035) 52%,transparent 58% 100%);animation:spin 90s linear infinite;mix-blend-mode:screen}
 @keyframes spin{to{transform:rotate(360deg)}}
 .grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:var(--grain-op);
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg" width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");}
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");}
 
 .glass{
   position:relative; isolation:isolate;
@@ -1438,7 +1438,7 @@ async function ghPush(){
     body: JSON.stringify({message:"فرمول‌یار: به‌روزرسانی data.json", content:b64, branch:br, ...(sha?{sha}:{})})
   });
   let r = await put();
-  if(r.status===409){ // sha قدیمی → دوباره بگیر و تلاش کن
+  if(r.status===409){
     const m2 = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/data.json?ref=${br}`,{headers:ghHeaders()});
     if(m2.ok){ sha = (await m2.json()).sha; r = await put(); }
   }
@@ -1469,7 +1469,7 @@ async function bootPull(){
       if(Array.isArray(data.materials))  DB.materials=data.materials;
       Store.save(DB); renderAll();
     }
-  }catch(e){ /* آفلاین یا فایل نیست */ }
+  }catch(e){ /* آفلاین یا فایل موجود نیست */ }
 }
 
 function openGhSettings(){
@@ -1486,7 +1486,7 @@ function openGhSettings(){
       <input class="f-in ltr" id="ghBranch" value="${esc(g.branch||"main")}" placeholder="main" autocapitalize="off">
       <label class="f-lbl">توکن دسترسی (Token)</label>
       <input class="f-in ltr" id="ghToken" type="password" value="${esc(g.token||"")}" placeholder="github_pat_..." autocomplete="off">
-      <p class="note">توکن فقط در حافظهٔ همین دستگاه ذخیره می‌شود، نه داخل فایل یا ریپو. ساخت توکن: گیت‌هاب → Settings → Developer settings → Personal access tokens → Fine-grained tokens → فقط همین ریپو را انتخاب کن و دسترسی <b>Contents: Read and write</b> بده.</p>
+      <p class="note">توکن فقط در حافظهٔ همین دستگاه ذخیره می‌شود، نه داخل فایل یا ریپو. ساخت توکن: گیت‌هاب → Settings → Developer settings → Personal access tokens → Fine-grained tokens → فقط همین ریپو و دسترسی <b>Contents: Read and write</b>.</p>
       <div class="dactions">
         <button class="btn btn-p" id="ghSave">${I.check} ذخیره تنظیمات</button>
         <button class="btn" id="ghPullBtn">⬇ دانلود از گیت‌هاب</button>

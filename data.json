@@ -1,7 +1,7 @@
 {
  "app": "granite-sink-formulas",
  "version": 2,
- "updatedAt": "2026-08-15T19:35:47.477Z",
+ "updatedAt": "2026-08-15T19:39:13.237Z",
  "categories": [
   "ژلکوت",
   "رزین",
@@ -502,6 +502,12 @@
      "name": "تینر",
      "amount": 50,
      "unit": "گرم"
+    },
+    {
+     "id": "id4d9sqn13paf",
+     "name": "مخلوط ونیل",
+     "amount": 2,
+     "unit": "کیلوگرم"
     }
    ],
    "variants": [
@@ -532,6 +538,132 @@
    ],
    "tags": [],
    "history": [
+    {
+     "at": 1786822751735,
+     "data": {
+      "id": "id17iuq5ab69u",
+      "name": "فرمول سفید و مشکی",
+      "category": "ژلکوت",
+      "color": {
+       "hex": "#ffffff",
+       "name": "سفید و مشکی"
+      },
+      "description": "",
+      "image": null,
+      "base": {
+       "name": "ژلکوت",
+       "amount": 15,
+       "unit": "کیلوگرم"
+      },
+      "materials": [
+       {
+        "id": "idsx1ok1rc6c4",
+        "name": "سیلیس",
+        "amount": 5,
+        "unit": "کیلوگرم"
+       },
+       {
+        "id": "idasso8yzcisl",
+        "name": "اروزیل",
+        "amount": 50,
+        "unit": "گرم"
+       },
+       {
+        "id": "idwmdsw9pcrfp",
+        "name": "تینر",
+        "amount": 50,
+        "unit": "گرم"
+       }
+      ],
+      "variants": [
+       {
+        "id": "id1cx9wpapmvi",
+        "name": "سفید",
+        "materials": [
+         {
+          "id": "idctjbunxqftv",
+          "name": "تیتانیوم اکسید",
+          "amount": 2.2,
+          "unit": "کیلوگرم"
+         }
+        ]
+       },
+       {
+        "id": "idcjvevzlritv",
+        "name": "مشکی",
+        "materials": [
+         {
+          "id": "id622z36krmsh",
+          "name": "خمیر رنگ مشکی",
+          "amount": 500,
+          "unit": "گرم"
+         }
+        ]
+       }
+      ],
+      "tags": [],
+      "history": [
+       {
+        "at": 1786818878986,
+        "data": {
+         "id": "id17iuq5ab69u",
+         "name": "فرمول سفید",
+         "category": "ژلکوت",
+         "color": {
+          "hex": "#ffffff",
+          "name": "سفید"
+         },
+         "description": "",
+         "image": null,
+         "base": {
+          "name": "ژلکوت",
+          "amount": 15,
+          "unit": "کیلوگرم"
+         },
+         "materials": [
+          {
+           "id": "idsx1ok1rc6c4",
+           "name": "سیلیس",
+           "amount": 5,
+           "unit": "کیلوگرم"
+          },
+          {
+           "id": "idasso8yzcisl",
+           "name": "اروزیل",
+           "amount": 50,
+           "unit": "گرم"
+          },
+          {
+           "id": "idwmdsw9pcrfp",
+           "name": "تینر",
+           "amount": 50,
+           "unit": "گرم"
+          },
+          {
+           "id": "id6mod9g2d1pl",
+           "name": "تیتانیوم اکسید",
+           "amount": 2.2,
+           "unit": "کیلوگرم"
+          }
+         ],
+         "variants": [],
+         "tags": [],
+         "history": [],
+         "fav": false,
+         "createdAt": 1786791138690,
+         "updatedAt": 1786791260425,
+         "useCount": 0,
+         "lastUsedAt": null
+        }
+       }
+      ],
+      "fav": false,
+      "createdAt": 1786791138690,
+      "updatedAt": 1786818878985,
+      "useCount": 0,
+      "lastUsedAt": null
+     }
+    },
     {
      "at": 1786818878986,
      "data": {
@@ -588,7 +720,7 @@
    ],
    "fav": false,
    "createdAt": 1786791138690,
-   "updatedAt": 1786818878985,
+   "updatedAt": 1786822751733,
    "useCount": 0,
    "lastUsedAt": null
   }

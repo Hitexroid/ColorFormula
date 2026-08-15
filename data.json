@@ -1,7 +1,7 @@
 {
  "app": "granite-sink-formulas",
  "version": 2,
- "updatedAt": "2026-08-15T19:39:13.237Z",
+ "updatedAt": "2026-08-15T19:43:27.133Z",
  "categories": [
   "ژلکوت",
   "رزین",
@@ -110,6 +110,81 @@
   }
  ],
  "formulas": [
+  {
+   "id": "id7gwo8ir6vpk",
+   "name": "فرمول سفید و مشکی",
+   "category": "رزین",
+   "color": {
+    "hex": "#000000",
+    "name": "رزین سفید و مشکی"
+   },
+   "description": "",
+   "image": null,
+   "base": {
+    "name": "رزین",
+    "amount": 15,
+    "unit": "کیلوگرم"
+   },
+   "materials": [
+    {
+     "id": "idcrfaoch7lzf",
+     "name": "کبالت",
+     "amount": 50,
+     "unit": "گرم"
+    },
+    {
+     "id": "idct327857vg4",
+     "name": "اروزیل",
+     "amount": 100,
+     "unit": "گرم"
+    },
+    {
+     "id": "id3zeafj08l2v",
+     "name": "استایرن",
+     "amount": 2,
+     "unit": "لیوان یکبار مصرف"
+    },
+    {
+     "id": "iduspyh6994dw",
+     "name": "سیلیس",
+     "amount": 10,
+     "unit": "کیلوگرم"
+    }
+   ],
+   "variants": [
+    {
+     "id": "idd71gpvp9gcc",
+     "name": "سفید",
+     "materials": [
+      {
+       "id": "id4bfc5zr9j2s",
+       "name": "تیتانیوم اکسید",
+       "amount": 2,
+       "unit": "کیلوگرم"
+      }
+     ]
+    },
+    {
+     "id": "idb9gfksy9uq3",
+     "name": "مشکی",
+     "materials": [
+      {
+       "id": "id2b3mqhz9y3w",
+       "name": "خمیر رنگ مشکی",
+       "amount": 500,
+       "unit": "گرم"
+      }
+     ]
+    }
+   ],
+   "tags": [],
+   "history": [],
+   "fav": false,
+   "createdAt": 1786822851080,
+   "updatedAt": 1786823005628,
+   "useCount": 0,
+   "lastUsedAt": null
+  },
   {
    "id": "id6qglcx3tp7f",
    "name": "فرمول ونیل استیر",

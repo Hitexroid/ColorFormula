@@ -1,7 +1,7 @@
 {
  "app": "granite-sink-formulas",
  "version": 2,
- "updatedAt": "2026-08-15T18:34:40.491Z",
+ "updatedAt": "2026-08-15T18:36:49.833Z",
  "categories": [
   "ژلکوت",
   "رزین",
@@ -65,6 +65,38 @@
   }
  ],
  "formulas": [
+  {
+   "id": "id6yl9q2mudsx",
+   "name": "فرمول طوسی",
+   "category": "ژلکوت",
+   "color": {
+    "hex": "#9aa7b5",
+    "name": "طوسی"
+   },
+   "description": "",
+   "image": null,
+   "base": {
+    "name": "ژلکوت سفید",
+    "amount": 10,
+    "unit": "کیلوگرم"
+   },
+   "materials": [
+    {
+     "id": "idkw4xx04vqch",
+     "name": "ژلکوت مشکی",
+     "amount": 2.1,
+     "unit": "کیلوگرم"
+    }
+   ],
+   "variants": [],
+   "tags": [],
+   "history": [],
+   "fav": false,
+   "createdAt": 1786818908769,
+   "updatedAt": 1786819008332,
+   "useCount": 0,
+   "lastUsedAt": null
+  },
   {
    "id": "id17iuq5ab69u",
    "name": "فرمول سفید و مشکی",

@@ -1,7 +1,7 @@
 {
  "app": "granite-sink-formulas",
  "version": 2,
- "updatedAt": "2026-08-15T10:56:32.312Z",
+ "updatedAt": "2026-08-15T18:34:40.491Z",
  "categories": [
   "ژلکوت",
   "رزین",
@@ -67,11 +67,11 @@
  "formulas": [
   {
    "id": "id17iuq5ab69u",
-   "name": "فرمول سفید",
+   "name": "فرمول سفید و مشکی",
    "category": "ژلکوت",
    "color": {
     "hex": "#ffffff",
-    "name": "سفید"
+    "name": "سفید و مشکی"
    },
    "description": "",
    "image": null,
@@ -98,20 +98,93 @@
      "name": "تینر",
      "amount": 50,
      "unit": "گرم"
-    },
-    {
-     "id": "id6mod9g2d1pl",
-     "name": "تیتانیوم اکسید",
-     "amount": 2.2,
-     "unit": "کیلوگرم"
     }
    ],
-   "variants": [],
+   "variants": [
+    {
+     "id": "id1cx9wpapmvi",
+     "name": "سفید",
+     "materials": [
+      {
+       "id": "idctjbunxqftv",
+       "name": "تیتانیوم اکسید",
+       "amount": 2.2,
+       "unit": "کیلوگرم"
+      }
+     ]
+    },
+    {
+     "id": "idcjvevzlritv",
+     "name": "مشکی",
+     "materials": [
+      {
+       "id": "id622z36krmsh",
+       "name": "خمیر رنگ مشکی",
+       "amount": 500,
+       "unit": "گرم"
+      }
+     ]
+    }
+   ],
    "tags": [],
-   "history": [],
+   "history": [
+    {
+     "at": 1786818878986,
+     "data": {
+      "id": "id17iuq5ab69u",
+      "name": "فرمول سفید",
+      "category": "ژلکوت",
+      "color": {
+       "hex": "#ffffff",
+       "name": "سفید"
+      },
+      "description": "",
+      "image": null,
+      "base": {
+       "name": "ژلکوت",
+       "amount": 15,
+       "unit": "کیلوگرم"
+      },
+      "materials": [
+       {
+        "id": "idsx1ok1rc6c4",
+        "name": "سیلیس",
+        "amount": 5,
+        "unit": "کیلوگرم"
+       },
+       {
+        "id": "idasso8yzcisl",
+        "name": "اروزیل",
+        "amount": 50,
+        "unit": "گرم"
+       },
+       {
+        "id": "idwmdsw9pcrfp",
+        "name": "تینر",
+        "amount": 50,
+        "unit": "گرم"
+       },
+       {
+        "id": "id6mod9g2d1pl",
+        "name": "تیتانیوم اکسید",
+        "amount": 2.2,
+        "unit": "کیلوگرم"
+       }
+      ],
+      "variants": [],
+      "tags": [],
+      "history": [],
+      "fav": false,
+      "createdAt": 1786791138690,
+      "updatedAt": 1786791260425,
+      "useCount": 0,
+      "lastUsedAt": null
+     }
+    }
+   ],
    "fav": false,
    "createdAt": 1786791138690,
-   "updatedAt": 1786791260425,
+   "updatedAt": 1786818878985,
    "useCount": 0,
    "lastUsedAt": null
   }

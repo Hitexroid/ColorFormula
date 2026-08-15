@@ -1,7 +1,7 @@
 {
  "app": "granite-sink-formulas",
  "version": 2,
- "updatedAt": "2026-08-15T19:30:09.414Z",
+ "updatedAt": "2026-08-15T19:34:07.905Z",
  "categories": [
   "ژلکوت",
   "رزین",
@@ -101,6 +101,11 @@
   {
    "id": "idp89rp5wio7s",
    "name": "پودر شاین 163",
+   "unit": "گرم"
+  },
+  {
+   "id": "ids2dkkbty7fr",
+   "name": "آب‌زرد DMA",
    "unit": "گرم"
   }
  ],

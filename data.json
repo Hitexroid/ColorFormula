@@ -1,7 +1,7 @@
 {
  "app": "granite-sink-formulas",
  "version": 2,
- "updatedAt": "2026-08-15T19:49:08.734Z",
+ "updatedAt": "2026-08-16T14:24:50.569Z",
  "categories": [
   "ژلکوت",
   "رزین",
@@ -149,11 +149,124 @@
      "name": "استایرن",
      "amount": 0.7,
      "unit": "لیوان یکبار مصرف"
+    },
+    {
+     "id": "idb5lgqlwbsek",
+     "name": "اروزیل",
+     "amount": 66,
+     "unit": "گرم"
+    },
+    {
+     "id": "idss5uh7fc0py",
+     "name": "کبالت",
+     "amount": 33,
+     "unit": "گرم"
     }
    ],
    "variants": [],
    "tags": [],
    "history": [
+    {
+     "at": 1786890289065,
+     "data": {
+      "id": "idb1rgiq7ciyf",
+      "name": "رزین نوک مدادی",
+      "category": "رزین",
+      "color": {
+       "hex": "#1a1a1a",
+       "name": "نوک مدادی"
+      },
+      "description": "",
+      "image": null,
+      "base": {
+       "name": "رزین",
+       "amount": 10,
+       "unit": "کیلوگرم"
+      },
+      "materials": [
+       {
+        "id": "idjcijrnqdit2",
+        "name": "سیلیس",
+        "amount": 6.6,
+        "unit": "کیلوگرم"
+       },
+       {
+        "id": "idnj6g0kcdonl",
+        "name": "خمیر رنگ مشکی",
+        "amount": 130,
+        "unit": "گرم"
+       },
+       {
+        "id": "idcpxxbxidzdh",
+        "name": "پودر نوک مدادی",
+        "amount": 88,
+        "unit": "گرم"
+       },
+       {
+        "id": "id16nv3i5eg0b",
+        "name": "استایرن",
+        "amount": 0.7,
+        "unit": "لیوان یکبار مصرف"
+       }
+      ],
+      "variants": [],
+      "tags": [],
+      "history": [
+       {
+        "at": 1786823347227,
+        "data": {
+         "id": "idb1rgiq7ciyf",
+         "name": "رزین نوک مدادی",
+         "category": "رزین",
+         "color": {
+          "hex": "#1a1a1a",
+          "name": "نوک مدادی"
+         },
+         "description": "",
+         "image": null,
+         "base": {
+          "name": "رزین",
+          "amount": 10,
+          "unit": "کیلوگرم"
+         },
+         "materials": [
+          {
+           "id": "idjcijrnqdit2",
+           "name": "سیلیس",
+           "amount": 6.6,
+           "unit": "کیلوگرم"
+          },
+          {
+           "id": "idnj6g0kcdonl",
+           "name": "خمیر رنگ مشکی",
+           "amount": 130,
+           "unit": "گرم"
+          },
+          {
+           "id": "idcpxxbxidzdh",
+           "name": "پودر نوک مدادی",
+           "amount": 88,
+           "unit": "گرم"
+          }
+         ],
+         "variants": [],
+         "tags": [],
+         "history": [],
+         "fav": false,
+         "createdAt": 1786823114487,
+         "updatedAt": 1786823196825,
+         "useCount": 0,
+         "lastUsedAt": null
+        }
+       }
+      ],
+      "fav": false,
+      "createdAt": 1786823114487,
+      "updatedAt": 1786823347227,
+      "useCount": 0,
+      "lastUsedAt": null
+     }
+    },
     {
      "at": 1786823347227,
      "data": {
@@ -204,7 +317,7 @@
    ],
    "fav": false,
    "createdAt": 1786823114487,
-   "updatedAt": 1786823347227,
+   "updatedAt": 1786890289065,
    "useCount": 0,
    "lastUsedAt": null
   },

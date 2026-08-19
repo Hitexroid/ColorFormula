@@ -1,7 +1,7 @@
 {
  "app": "granite-sink-formulas",
  "version": 2,
- "updatedAt": "2026-08-16T14:27:03.379Z",
+ "updatedAt": "2026-08-19T14:01:56.943Z",
  "categories": [
   "ژلکوت",
   "رزین",
@@ -657,8 +657,8 @@
    "fav": false,
    "createdAt": 1786822236123,
    "updatedAt": 1786822545975,
-   "useCount": 0,
-   "lastUsedAt": null
+   "useCount": 1,
+   "lastUsedAt": 1787148115440
   },
   {
    "id": "idjpuedzon6xp",
